@@ -37,7 +37,11 @@ function getObserver() {
       // Fire a little before the piece is fully on screen so the stagger has
       // room to play out rather than resolving after the user has scrolled by.
       rootMargin: '0px 0px -10% 0px',
-      threshold: 0.1,
+      // Must be 0, not a ratio. Several collage layers are deliberately far
+      // larger than the viewport (the About tree layer is 3923x6976), so the
+      // viewport can only ever cover a few percent of them -- any non-zero
+      // threshold is unreachable and they never reveal at all.
+      threshold: 0,
     }
   )
 

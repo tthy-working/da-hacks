@@ -207,10 +207,10 @@
    Mobile: re-proportion the stage and re-frame the collage so the wordmark
    and the date stay legible instead of shrinking with the band.
    ========================================================================= */
-@media (max-width: 760px) {
+@media (max-width: 640px) {
   .hero__stage {
     aspect-ratio: 4 / 5;
-    min-height: 78svh;
+    min-height: 74svh;
   }
 
   /* let the photo layers crop rather than squash */
@@ -256,12 +256,15 @@
     height: 88%;
   }
 
-  /* wordmark: bigger, moved to the upper-centre where there's clear sky */
+  /* Wordmark moved to the upper-centre where there's clear sky. Height comes
+     from the paper-cards artwork's own aspect ratio -- pinning it to a % of
+     the stage squashed the cards into a white blob once the stage went tall. */
   .hero__mark {
-    left: 6%;
-    top: 11%;
-    width: 86%;
-    height: 32%;
+    left: 8%;
+    top: 15%;
+    width: 78%;
+    height: auto;
+    aspect-ratio: 622.746 / 241;
   }
 
   .hero__burst {
@@ -279,9 +282,29 @@
   }
 }
 
-@media (max-width: 420px) {
+/* small phones: step the lockup down rather than letting it fill the width */
+@media (max-width: 400px) {
+  .hero__stage {
+    min-height: 70svh;
+  }
+
   .hero__mark {
-    top: 9%;
-    width: 92%;
+    left: 6%;
+    top: 14%;
+    width: 82%;
+  }
+
+  .hero__burst {
+    left: 48%;
+    top: 58%;
+    width: 48%;
+    height: 28%;
+  }
+
+  .hero__ver {
+    left: 54%;
+    top: 61.5%;
+    width: 33%;
+    height: 20%;
   }
 }

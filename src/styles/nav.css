@@ -109,7 +109,7 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1040px) {
   .nav__burger {
     display: block;
   }
@@ -121,7 +121,7 @@
     align-items: stretch;
     gap: 14px;
     padding: 20px clamp(16px, 6vw, 40px) 28px;
-    background: #fdf6e8 url('/assets/nav-texture.png') center / auto 60px repeat;
+    background: #fdf6e8 url('/assets/nav-texture.png') top center / auto 58px repeat-x;
     box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
 
     /* collapsed */
@@ -143,7 +143,8 @@
 
   .nav__link {
     font-size: 19px;
-    padding: 10px 22px;
+    padding: 11px 34px;
+    align-self: flex-start;
     /* stagger the pills in as the menu opens */
     transform: translateX(-14px) rotate(-1.5deg);
     opacity: 0;
@@ -163,7 +164,7 @@
   .nav__burger { order: 3; margin-left: 4px; }
 }
 
-@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 1040px) and (prefers-reduced-motion: reduce) {
   .nav__links,
   .nav__link {
     transition: none;

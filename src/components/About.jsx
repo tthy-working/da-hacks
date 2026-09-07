@@ -5,7 +5,7 @@ const LAYERS = [
   { cls: 'about__l39', src: 'layer-39.png', delay: 60, crop: true },
   { cls: 'about__l38', src: 'layer-38.png', delay: 120, crop: true },
   { cls: 'about__l37', src: 'layer-37.png', delay: 180, inner: true },
-  { cls: 'about__l40', src: 'layer-40.png', delay: 240 },
+  { cls: 'about__l40', src: 'layer-40.png', delay: 240, inner: true },
 ]
 
 export default function About() {
@@ -36,12 +36,18 @@ export default function About() {
           </p>
         </Reveal>
 
-        <Reveal as="p" className="about__copy" variant="up" delay={400}>
-          <strong>DA Hacks</strong> is an annual weekend-long hackathon at De Anza College
-          where students from every background come together to turn big ideas into working
-          tech projects. Over two days, hackers build from scratch, learn new skills, find
-          teammates, and share what they create with the community.
-        </Reveal>
+        <div className="about__copy">
+          <Reveal as="p" variant="up" delay={400}>
+            <strong>DA Hacks</strong> is an annual weekend-long hackathon at De Anza
+            College where students from every background come together to turn big ideas
+            into working tech projects.
+          </Reveal>
+
+          <Reveal as="p" variant="up" delay={470}>
+            Over two days, hackers build from scratch, learn new skills, find teammates,
+            and share what they create with the community.
+          </Reveal>
+        </div>
 
         <Reveal className="about__date" variant="right snap" delay={520}>
           <div>

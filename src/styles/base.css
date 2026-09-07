@@ -61,20 +61,26 @@ button {
   cursor: pointer;
 }
 
-/* ---- shared section shell ---- */
+/* ---- shared section shell ----
+   No min-height: each section is exactly as tall as its own stage. Forcing
+   100svh leaves a large empty band under the aspect-locked stage on short or
+   narrow viewports (at 768px wide the stage is only ~450px tall). */
 .section {
   position: relative;
   width: 100%;
-  min-height: 100svh;
   overflow: hidden;
   isolation: isolate;
 }
 
-@media (max-width: 760px) {
-  .section {
-    min-height: auto;
-  }
-}
+/* Breakpoints
+   ----------------------------------------------------------------
+   > 1200px   collage stages, absolute positioning, design geometry
+   <= 1200px  About/Sponsors/Agenda reflow to stacked flow layout
+              (below this the design's 16px copy hits its clamp floor and
+              the absolutely placed boxes start to collide)
+   <= 640px   hero switches to its tall phone framing
+   <= 400px   type and spacing step down again for small phones
+   Nav collapses to a burger at <= 1040px. */
 
 /* Full-bleed collage layer. The design stacks torn-paper photo layers at
    odd offsets; each one keeps its own % box and covers within it. */

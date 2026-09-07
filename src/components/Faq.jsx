@@ -27,13 +27,19 @@ export default function Faq() {
                 <button
                   type="button"
                   className="faq__q"
+                  id={`faq-q-${i}`}
                   aria-expanded={isOpen}
                   aria-controls={`faq-a-${i}`}
                   onClick={() => setOpen(isOpen ? null : i)}
                 >
                   {item.q}
                 </button>
-                <div className="faq__a" id={`faq-a-${i}`} role="region" aria-hidden={!isOpen}>
+                <div
+                  className="faq__a"
+                  id={`faq-a-${i}`}
+                  role="region"
+                  aria-labelledby={`faq-q-${i}`}
+                >
                   <div>
                     <p>{item.a}</p>
                   </div>

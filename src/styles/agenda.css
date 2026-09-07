@@ -134,13 +134,13 @@
 }
 
 /* ---- mobile ---- */
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .agenda__days {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1200px) {
   .agenda__stage {
     aspect-ratio: auto;
     padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
@@ -157,10 +157,15 @@
     height: 46%;
   }
 
+  /* The arc's own bounding box in the design is 401.61 x 232.5. Matching that
+     aspect lets the cqw-sized letters scale with the box instead of
+     overflowing a fixed height and colliding with the cards. */
   .agenda__title {
     position: static;
-    width: 100%;
-    height: clamp(120px, 34vw, 200px);
+    width: min(100%, 460px);
+    height: auto;
+    aspect-ratio: 401.61 / 232.5;
+    margin: 0 auto;
     inset: auto;
   }
 

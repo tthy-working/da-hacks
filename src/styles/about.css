@@ -33,29 +33,27 @@
   transform: rotate(4.86deg);
 }
 
-/* Clipped to the top band on purpose. The canopy sits at the far left of a
-   16:9 source and the cliff at the far right, so the layer has to span the
-   full width for both corners to read -- but then its lower two-thirds would
-   sit over the body copy. The window crops it to just the hanging foliage. */
+/* Verbatim from the design context for node 9:539. The container-query
+   sizing (h:100cqw / w:100cqh) makes the 90deg-rotated child land flush with
+   its box; rotating puts the source's left edge (tree canopy) along the top,
+   which is what produces the foliage in both top corners and the cactus at
+   bottom-left. Looks absurd on paper -- a 3809x6773 box -- but it is correct. */
 .about__l40 {
-  left: -5%;
-  top: 0;
-  width: 112%;
-  height: 22%;
-  overflow: hidden;
-  /* feather the crop so it reads as foliage thinning out rather than a
-     straight cut across the section */
-  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+  left: -137.22%;
+  right: -27.29%;
+  top: -287.57%;
+  bottom: -413.96%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size;
 }
 
-.about__l40 img {
-  position: absolute;
-  left: 0;
-  top: -136.4%;
-  width: 100%;
-  height: 481.8%;
-  object-fit: cover;
+.about__l40 > div {
+  flex: none;
+  width: 100cqh;
+  height: 100cqw;
+  transform: rotate(90deg);
 }
 
 /* ---- the rotated "About" word ---- */
@@ -72,23 +70,35 @@
   container-type: inline-size;
 }
 
+/* The design's text box is 452 x 150.454 inside a 461.676 x 370.716 frame,
+   with the word sitting at the box's LEFT edge. That matters: the rotation
+   pivots on the box centre, so a content-sized (and therefore centred) <p>
+   lands the word ~73px right and ~36px high of where Figma puts it. */
 .about__title p {
   flex: none;
   margin: 0;
+  width: 97.9%;
   font-size: 23.61cqw;
+  line-height: 1.38;
+  text-align: left;
   transform: rotate(-32.68deg);
   white-space: nowrap;
 }
 
 /* ---- body copy ----
-   The design has this as six separately positioned single-line text nodes.
-   Rebuilt as one flowing paragraph so it reflows, wraps and translates. */
+   The design has this as six separately positioned single-line text nodes in
+   two visual paragraphs. Rebuilt as a positioned container with two flowing
+   paragraphs inside, so it wraps, reflows and can be translated.
+   Column is ~37% (Figma's widest line measures ~530px of 1440). */
 .about__copy {
   position: absolute;
   left: 44.6%;
   top: 30.4%;
-  width: 40.5%;
+  width: 37%;
   z-index: 3;
+}
+
+.about__copy p {
   margin: 0;
   color: var(--ink);
   font-size: clamp(11px, 1.11vw, 16px);
@@ -103,8 +113,11 @@
   letter-spacing: 0;
 }
 
-.about__copy + .about__copy {
-  margin-top: 0.9em;
+/* Figma leaves a ~33px gap between the paragraphs and starts the second one
+   ~65px further right than the first. */
+.about__copy p + p {
+  margin-top: 2em;
+  padding-left: 12%;
 }
 
 /* ---- olive date card ---- */
@@ -143,7 +156,7 @@
 }
 
 /* ---- mobile: drop the collage to a backdrop and let the text lead ---- */
-@media (max-width: 760px) {
+@media (max-width: 1200px) {
   .about__stage {
     aspect-ratio: auto;
     min-height: auto;
@@ -186,10 +199,19 @@
   }
 
   .about__copy {
-    font-size: 15px;
     background: rgba(255, 255, 255, 0.82);
     padding: 16px 18px;
     box-shadow: var(--shadow-paper-sm);
+  }
+
+  .about__copy p {
+    font-size: 15px;
+  }
+
+  /* the indent is a desktop composition detail; drop it on narrow screens */
+  .about__copy p + p {
+    margin-top: 1em;
+    padding-left: 0;
   }
 
   .about__date > div {

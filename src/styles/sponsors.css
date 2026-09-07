@@ -129,7 +129,7 @@
 }
 
 /* ---- mobile ---- */
-@media (max-width: 760px) {
+@media (max-width: 1200px) {
   .sponsors__stage {
     aspect-ratio: auto;
     padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
@@ -168,8 +168,9 @@
     text-align: center;
   }
 
+  /* keep 4-up on tablets; only drop to 2-up on phones */
   .sponsors__wall {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .sponsors__ask {
@@ -190,5 +191,25 @@
 
   .sponsors__cta span {
     font-size: 26px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sponsors__wall {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .sponsors__title {
+    font-size: clamp(32px, 11.5vw, 52px);
+  }
+
+  .sponsors__ask {
+    font-size: 14px;
+  }
+
+  .sponsors__cta span {
+    font-size: 22px;
   }
 }

@@ -44,6 +44,10 @@ properties (`--rv-x/y/rot/scale/settle/dur/delay`) documented at the top of
   on purpose -- the whole hero lands in about 1.2s.
 - `variant="snap"` swaps the transition for a keyframed double-overshoot, used
   on the hero cut-outs and the wordmark letters.
+- The observer uses `threshold: 0`, and must. Several collage layers are
+  deliberately far larger than the viewport (the About tree layer is
+  3923x6976 rendered), so the viewport can only ever cover a few percent of
+  them -- any ratio threshold is unreachable and those layers never reveal.
 - `settle` **must** be passed for any element that is rotated in the design,
   or the reveal lands it flat at 0deg and the collage loses its hand-placed
   feel.
@@ -55,9 +59,27 @@ properties (`--rv-x/y/rot/scale/settle/dur/delay`) documented at the top of
 
 Each designed section is an aspect-locked stage (`aspect-ratio: 1440/845` or
 `1440/832`) so every layer can use the design's own percentages and the whole
-collage scales as one piece. Under 760px the stages re-proportion, the photo
-layers re-crop, and the absolutely positioned content falls back to flow
-layout -- a 1.7:1 band is unreadable on a phone.
+collage scales as one piece.
+
+| Width | Behaviour |
+|---|---|
+| > 1200px | Collage stages, absolute positioning, design geometry |
+| <= 1200px | About / Sponsors / Agenda reflow to stacked flow layout |
+| <= 1040px | Nav collapses to a burger |
+| <= 900px | Agenda schedule goes single-column |
+| <= 640px | Hero switches to its tall phone framing; logo wall 2-up |
+| <= 400px | Type and spacing step down again |
+
+Two things drive those numbers rather than taste:
+
+- **1200px** is where the design's 16px body copy hits its `clamp()` floor and
+  the absolutely placed boxes (copy vs. date card) start to collide.
+- Sections carry **no `min-height`**. Forcing `100svh` leaves a large empty
+  band under an aspect-locked stage on narrow viewports -- at 768px the hero
+  stage is only ~450px tall against an 800px viewport.
+
+Verified at 320 / 360 / 390 / 430 / 768 / 1024 / 1100 / 1220 / 1440 with no
+horizontal overflow at any width.
 
 ## Deviations from the Figma file
 
@@ -78,14 +100,14 @@ diffing against Figma renders of each node.
 - Screen 4 also contains `Group 2` and `Group 3`, two identical letter sets
   offset by 7px. Only one set is reproduced.
 
-**Approximated:**
-- `about__l40` (the tree/cliff layer). The design's two coordinate sources
-  disagree: node metadata puts it entirely off-stage (`x=1833` on a 1440
-  frame) while the design-context inset puts it at `-137%` and container-sized,
-  which magnifies the 1920x1080 source ~3.5x and leaves an unrecognisable
-  sliver. Neither reproduces what the Figma render shows, so it is clipped and
-  feathered to the top band to match the rendered intent. See the comment in
-  `styles/about.css`.
+**A note on `about__l40` (the tree/cliff layer):**
+Its two coordinate sources disagree -- node metadata puts it entirely
+off-stage (`x=1833` on a 1440 frame) while the design context puts it at
+`-137%` and container-sized. The design context is the correct one: sized with
+`h:100cqw / w:100cqh` and rotated 90deg, the source's left edge (tree canopy)
+lands along the top, which is exactly what produces the foliage in both top
+corners and the cactus at bottom-left. The box works out to 3809x6773, which
+looks like a mistake but is not. Do not "simplify" it.
 
 **Invented -- needs real content before launch:**
 - `src/data/agenda.js` -- the Figma file has no schedule, only the backdrop
@@ -101,6 +123,14 @@ diffing against Figma renders of each node.
 Both "Apply now!" buttons (nav + closing CTA) point at `APPLY_URL` in
 `src/config.js` -- currently the Luma page
 <https://luma.com/6p4w9p21> -- and open in a new tab. Change it in one place.
+
+## FAQ accordion
+
+Answers animate `grid-template-rows: 0fr <-> 1fr`, not a guessed
+`max-height`, so long answers don't clip. The easing is deliberately
+**symmetric** (`cubic-bezier(.4,0,.2,1)`): a front-loaded curve loses half the
+height in the first 40ms, which reads as the answer vanishing rather than
+shrinking closed.
 
 ## Known issues
 

@@ -35,7 +35,7 @@ export default function NavBar() {
   // If the viewport grows back to desktop while the menu is open, the panel
   // styles no longer apply -- drop the state so it can't get stuck.
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 861px)')
+    const mq = window.matchMedia('(min-width: 1041px)')
     const onChange = (e) => e.matches && setOpen(false)
     mq.addEventListener('change', onChange)
     return () => mq.removeEventListener('change', onChange)
