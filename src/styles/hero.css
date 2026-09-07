@@ -234,6 +234,18 @@
   color: var(--ink);
 }
 
+/* Tablet / narrow window. Every other section has already reflowed to a
+   stacked column by 1200px, but the hero was still holding the design's
+   1.704:1 band -- at 820px that is a 481px-tall letterbox, which is what made
+   this range feel out of step with the rest of the page. A 3:2 stage gives it
+   back some height while keeping the design's collage geometry; the layers
+   below stay exactly where the design puts them. */
+@media (max-width: 1200px) and (min-width: 641px) {
+  .hero__stage {
+    aspect-ratio: 3 / 2;
+  }
+}
+
 /* =========================================================================
    Mobile: re-proportion the stage and re-frame the collage so the wordmark
    and the date stay legible instead of shrinking with the band.
