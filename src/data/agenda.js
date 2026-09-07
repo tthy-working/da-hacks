@@ -40,5 +40,9 @@ export const AGENDA = [
   },
 ]
 
-/** Where it all happens, from the same call sheet. */
-export const VENUE = 'Conf. Room A & B · Don Bautista & El Clemente · Cafeteria · Fireside Lounge'
+/**
+ * The room to head for. The call sheet also lists Don Bautista & El Clemente,
+ * the Cafeteria and the Fireside Lounge -- kept here on record, but the site
+ * shows the one people need in order to find the door on the day.
+ */
+export const VENUE = 'Conf. Room A & B'

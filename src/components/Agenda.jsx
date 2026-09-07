@@ -71,8 +71,7 @@ export default function Agenda() {
         </div>
 
         <Reveal as="p" className="agenda__note" variant="up" delay={600} settle={-1.4}>
-          Doors 8:00 AM both days. {VENUE}. Follow <strong>@deanzahacks</strong> on Discord for
-          anything that moves on the day.
+          Location: <strong>{VENUE}</strong>
         </Reveal>
       </div>
     </section>

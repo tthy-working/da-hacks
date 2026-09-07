@@ -117,15 +117,18 @@
   font-weight: 700;
 }
 
+/* Sits high enough to be read on the way past rather than after the schedule,
+   and only as wide as the one line it now carries. */
 .agenda__note {
   position: absolute;
   left: 3%;
-  bottom: 5%;
-  width: 27%;
+  bottom: 26%;
+  width: max-content;
+  max-width: 34%;
   z-index: 4;
   margin: 0;
-  font-size: clamp(9.5px, 1.04vw, 14px);
-  line-height: 1.5;
+  font-size: clamp(13px, 1.53vw, 21px);
+  line-height: 1.4;
   color: #21351f;
   background: rgba(255, 255, 255, 0.8);
   padding: 10px 13px;
@@ -173,7 +176,9 @@
   .agenda__note {
     position: static;
     width: 100%;
+    max-width: none;
     inset: auto;
+    font-size: 15px;
   }
 
   .agenda__row {
