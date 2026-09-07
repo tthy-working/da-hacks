@@ -261,13 +261,17 @@
      specificity. */
   .about__stage .about__l37 {
     top: auto;
-    left: -6%;
-    bottom: -8%;
-    width: 62%;
-    height: 42%;
+    left: -8%;
+    bottom: -10%;
+    width: 78%;
+    height: 56%;
   }
 
-  .about__stage .about__l37.is-in {
+  /* Both the paper and the bridge run at full strength -- they are the
+     section's foreground, not backdrop texture. Only layer 36, the paper
+     ground behind them, stays dimmed. */
+  .about__stage .about__l37.is-in,
+  .about__stage .about__l38.is-in {
     opacity: 1;
   }
 
