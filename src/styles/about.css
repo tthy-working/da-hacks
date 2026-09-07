@@ -199,11 +199,33 @@
     gap: 22px;
   }
 
+  /* Lose the precise collage geometry -- on mobile these are only a backdrop.
+
+     Pinning them to exactly the frame is what left bare strips down both
+     sides: the cut-outs carry transparent margins baked into the PNGs (9.8%
+     on layer 36's right edge, 8.1% on 38's, 6.6% on 37's), the crop layers
+     place their bitmap by hand, and 37 keeps a 95.78% inner plate at 4.86deg.
+     All of that lands inside the frame once the box stops bleeding past it.
+     So: flatten every layer to a plain cover image, with 4% of bleed on each
+     side so nothing ragged can reach an edge. */
   .about__stage .layer {
-    /* keep the paper texture, lose the precise collage geometry */
-    inset: 0 auto auto 0;
+    inset: -4% auto auto -4%;
+    width: 108%;
+    height: 108%;
+  }
+
+  .about__stage .layer > div {
     width: 100%;
     height: 100%;
+    transform: none;
+  }
+
+  .about__stage .layer img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Dim it as the LANDED state, not unconditionally. Setting opacity on the
