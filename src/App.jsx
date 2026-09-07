@@ -1,6 +1,5 @@
 import NavBar from './components/NavBar'
-import Hero from './components/Hero'
-import About from './components/About'
+import Scene from './components/Scene'
 import Sponsors from './components/Sponsors'
 import Agenda from './components/Agenda'
 import Faq from './components/Faq'
@@ -14,8 +13,8 @@ export default function App() {
       </a>
       <NavBar />
       <main>
-        <Hero />
-        <About />
+        {/* hero + About are one pinned scroll scene: see Scene.jsx */}
+        <Scene />
         <Sponsors />
         <Agenda />
         <Faq />

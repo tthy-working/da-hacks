@@ -1,0 +1,94 @@
+/* =========================================================================
+   Screen 1 -> screen 2, the way Figma's Smart Animate does it
+   -------------------------------------------------------------------------
+   Both frames carry the same plates under the same names, so the transition
+   is not a cross-fade between two pictures: each plate travels from its own
+   box on screen 1 to its own box on screen 2. Layer 40 does the heavy
+   lifting -- 560x966 to 3809x6773, a 7x push that flies the camera into the
+   tree -- while 39 nearly doubles and 37 simply slides down the frame.
+
+   Every number below is (screen 2 - screen 1) read straight off the two
+   frames, in percentages of the stage, so the end of the morph lands exactly
+   on About's own geometry. That is why the hand-off is invisible: at p=1 the
+   hero's plates and About's plates occupy identical boxes, and the fade
+   between them has nothing to reveal.
+   ========================================================================= */
+.scene {
+  position: relative;
+}
+
+.scene__spacer {
+  display: none;
+}
+
+.scene.is-live {
+  /* how much scroll the transition is given */
+  --scene-distance: 170svh;
+}
+
+.scene.is-live .scene__pin {
+  position: sticky;
+  top: 0;
+}
+
+.scene.is-live .scene__spacer {
+  display: block;
+  height: var(--scene-distance);
+}
+
+/* ---- the two frames, stacked ---- */
+.scene.is-live .about {
+  position: absolute;
+  inset: 0 0 auto 0;
+  /* filter, not opacity: these sections' pieces run their own reveal on
+     opacity, and filter multiplies with it instead of overruling it */
+  filter: opacity(clamp(0, calc((var(--p, 0) - 0.55) / 0.35), 1));
+  pointer-events: none;
+  /* #about should land where the morph finishes, not where the scene starts;
+     a negative scroll margin pushes the anchor to the end of the spacer */
+  scroll-margin-top: calc(-1 * var(--scene-distance));
+}
+
+.scene.is-live.is-past .about {
+  pointer-events: auto;
+}
+
+.scene.is-live.is-past .hero {
+  pointer-events: none;
+}
+
+/* screen 1's lockups have no counterpart on screen 2, so they go */
+.scene.is-live .hero__mark,
+.scene.is-live .hero__burst,
+.scene.is-live .hero__ver {
+  filter: opacity(clamp(0, calc(1 - (var(--p, 0) - 0.1) / 0.35), 1));
+}
+
+/* ---- the plates ---- */
+.scene.is-live .hero__stage {
+  /* so the offsets below can be written in stage percentages: 1cqw is 1% of
+     the stage's width, 1cqh 1% of its height */
+  container-type: size;
+}
+
+.scene.is-live .hero__stage .layer {
+  transform-origin: 0 0;
+  /* translate/scale as their own properties, NOT transform: the reveal owns
+     transform on these elements, and the individual properties compose with
+     it rather than fighting it -- and they are not caught by its transition,
+     so scrolling stays instant */
+  translate: calc(var(--mx, 0) * var(--p, 0) * 1cqw) calc(var(--my, 0) * var(--p, 0) * 1cqh);
+  scale: calc(1 + (var(--msx, 1) - 1) * var(--p, 0)) calc(1 + (var(--msy, 1) - 1) * var(--p, 0));
+}
+
+/*                              dx        dy         scale x   scale y   */
+.scene.is-live .hero__l36 { --mx:   -2.062; --my:  -18.351; --msx: 1.2750; --msy: 1.1231; }
+.scene.is-live .hero__l39 { --mx:   20.924; --my:  -35.940; --msx: 1.8642; --msy: 1.6826; }
+.scene.is-live .hero__l38 { --mx:   -9.594; --my:  -19.008; --msx: 1.6555; --msy: 1.4952; }
+.scene.is-live .hero__l37 { --mx:  -12.567; --my:   17.042; --msx: 1.0000; --msy: 1.0000; }
+.scene.is-live .hero__l40 { --mx: -137.220; --my: -277.275; --msx: 6.8018; --msy: 7.0113; }
+
+/* 41 is the one plate screen 2 does not have, so it leaves */
+.scene.is-live .hero__l41 {
+  filter: opacity(clamp(0, calc(1 - var(--p, 0) / 0.6), 1));
+}
