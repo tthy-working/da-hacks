@@ -242,12 +242,29 @@
     display: none;
   }
 
+  /* The bridge has to reach every edge at any window shape. Its artwork only
+     occupies 82% x 77% of the PNG (transparent margins all round), so at 108%
+     the frame can see past the structure and the far side goes bare. Oversize
+     to 140% and the bridge covers the frame whatever the aspect: cover
+     guarantees the render is at least 140% of the frame in both axes, and
+     0.77 x 140% > 100%. Checked at 400x550 and 1200x700. */
+  .about__stage .about__l38 {
+    inset: -20% auto auto -20%;
+    width: 140%;
+    height: 140%;
+  }
+
   /* The scratch paper is a foreground element rather than backdrop texture:
-     full strength, and dropped down the frame so the strip crosses below the
-     title instead of running through it. Both rules sit after the shared
-     .about__stage .layer ones above, which they match on specificity. */
+     full strength, pinned to the bottom edge and pulled down to a corner so
+     it grounds the section instead of cutting across it. These rules sit
+     after the shared .about__stage .layer ones above, which they match on
+     specificity. */
   .about__stage .about__l37 {
-    top: 16%;
+    top: auto;
+    left: -6%;
+    bottom: -8%;
+    width: 62%;
+    height: 42%;
   }
 
   .about__stage .about__l37.is-in {
