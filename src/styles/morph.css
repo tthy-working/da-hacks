@@ -155,13 +155,15 @@
   filter: opacity(clamp(0, calc(1 - var(--q, 0) / 0.45), 1));
 }
 
-/* The tree leaves at the top of the turn rather than riding through it. By
-   screen 2 plate 40 is the blown-up canopy at 3809x6773, so carrying it
-   across put a wall of out-of-focus green over the whole shot for the first
-   half of the move. Quick enough to be gone before the pan reads, slow
-   enough not to pop. */
+/* The tree is the whole point of leg one and then it is in the way. It has to
+   be there for the dive -- 560x966 to 3809x6773 is the shot -- but by the end
+   of that it is a 7x blow-up of a 1920x1080 bitmap filling the frame, and it
+   sits over screen 2 as a wall of out-of-focus green. Screen 2's own copy of
+   the plate frames it as foliage in the top corners; this one cannot, because
+   it carries screen 1's bitmap crop with it. So it leaves as the dive lands,
+   and is long gone before the turn starts. */
 .scene.is-live .hero__l40 {
   --nx: -128.600;
   --ny: -48.279;
-  filter: opacity(clamp(0, calc(1 - var(--q, 0) / 0.12), 1));
+  filter: opacity(clamp(0, calc(1 - (var(--p, 0) - 0.8) / 0.2), 1));
 }
