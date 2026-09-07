@@ -137,7 +137,12 @@
 }
 
 /* ---- mobile ---- */
-@media (max-width: 900px) {
+/* Two columns for as long as they will take it. Stacking the days is what
+   made this section run past a screen on a phone-width window -- side by side
+   they cost the height of the longer day, stacked they cost both plus a gap.
+   A few of the longer event names wrap at this width; that is much the
+   cheaper price. */
+@media (max-width: 560px) {
   .agenda__days {
     grid-template-columns: 1fr;
   }
@@ -162,10 +167,18 @@
 
   /* The arc's own bounding box in the design is 401.61 x 232.5. Matching that
      aspect lets the cqw-sized letters scale with the box instead of
-     overflowing a fixed height and colliding with the cards. */
+     overflowing a fixed height and colliding with the cards.
+
+     RELATIVE, not static: the letters inside are absolutely positioned, so
+     with a static title they offset from .agenda__stage instead -- centring
+     the title box then moved an empty box while the arc stayed pinned to the
+     left gutter and hung off the edge of the screen.
+
+     460px to 340px as well: at the old size the heading alone stood 266px
+     tall, which is most of the reason this section outgrew a screen. */
   .agenda__title {
-    position: static;
-    width: min(100%, 460px);
+    position: relative;
+    width: min(100%, 340px);
     height: auto;
     aspect-ratio: 401.61 / 232.5;
     margin: 0 auto;
