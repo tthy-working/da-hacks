@@ -73,13 +73,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  container-type: size;
 }
 
 .hero__l40 > div {
   flex: none;
-  /* rotated 90deg, so its pre-rotation box is stage-relative 966x560 */
-  width: 172.5%;
-  height: 58.0%;
+  /* Pre-rotation box = this layer's own box with the axes swapped, so the
+     90deg rotation lands it flush at ANY stage aspect. The percentages this
+     replaces (172.5% / 58%) only rotated into an exact fit while the stage
+     held the design's 1.704:1; at the tablet 3:2 the plate came up ~49px
+     short top and bottom and the tree stopped above the bottom edge. Same
+     trick as .about__l40. */
+  width: 100cqh;
+  height: 100cqw;
   transform: rotate(90deg);
 }
 
