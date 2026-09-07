@@ -264,17 +264,18 @@
     height: 106%;
   }
 
-  /* The building has to reach the grass. Ending it mid-frame left its bottom
-     edge as a hard horizontal line across open sky, so the whole plate read as
-     floating -- on desktop the design runs it down to 90% and lets the grass
-     cover the cut. Taller and wider here so the edge finishes under the grass
-     at ~78%; the box goes a little squarer than the design's 0.93 in the
-     process, which the halftone carries fine. */
+  /* The building must have NO bottom edge on screen. Tucking the cut under the
+     grass is not enough: how much of it the blades actually cover depends on
+     the stage's proportions, so at 610px the edge surfaced again just above
+     them. The box now runs past the bottom of the stage, where overflow:hidden
+     clips it -- true at every viewport, with nothing depending on another
+     layer's alpha. Width scales with height so the box aspect, and therefore
+     the halftone, is exactly as it was; the plate simply sits ~29% larger. */
   .hero__l39 {
     left: 36%;
     top: -3%;
-    width: 84%;
-    height: 84%;
+    width: 108%;
+    height: 108%;
   }
 
   /* about 14% bigger than it was, same box aspect, dropped and pushed left so
