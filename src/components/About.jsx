@@ -36,16 +36,31 @@ export default function About() {
           </p>
         </Reveal>
 
+        {/* The design breaks these six lines by hand -- that hand-set rag is
+            what gives the block its taper against the bridge tower, and no
+            column width reproduces it by wrapping. The breaks are carried
+            explicitly and switched off under 1200px (see about.css), where the
+            copy reflows into a normal column.
+
+            The {' '} before each break is load-bearing: with the <br> hidden
+            the two text nodes butt together, and without it the copy reads
+            "De Anza Collegewhere". A trailing space at a line break collapses
+            away on desktop, so it costs nothing there. */}
         <div className="about__copy">
           <Reveal as="p" variant="up" delay={400}>
-            <strong>DA Hacks</strong> is an annual weekend-long hackathon at De Anza
-            College where students from every background come together to turn big ideas
-            into working tech projects.
+            <strong>DA Hacks</strong> is an annual weekend-long hackathon at De Anza College{' '}
+            <br />
+            where students from every background come together to{' '}
+            <br />
+            turn big ideas into working tech projects.
           </Reveal>
 
           <Reveal as="p" variant="up" delay={470}>
-            Over two days, hackers build from scratch, learn new skills, find teammates,
-            and share what they create with the community.
+            Over two days, hackers build from scratch, learn new{' '}
+            <br />
+            skills, find teammates, and share what they create{' '}
+            <br />
+            with the community.
           </Reveal>
         </div>
 

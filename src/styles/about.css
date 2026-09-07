@@ -92,18 +92,46 @@
    Column is ~37% (Figma's widest line measures ~530px of 1440). */
 .about__copy {
   position: absolute;
-  left: 44.6%;
-  top: 30.4%;
-  width: 37%;
+  left: 45%;
+  top: 31.243%;
+  /* wider than the longest line (the design's is 548px) so a hard-broken line
+     can never wrap into an orphan; the copy is left-aligned, so the slack
+     beyond the rag is invisible */
+  width: 41.667%;
   z-index: 3;
+}
+
+/* The copy's left edge runs parallel to the bridge's main cable. In the design
+   every line starts about 20px further right than the one above it -- 648,
+   665, 680 for the first paragraph, 712, 730, 747 for the second -- so the
+   block leans with the cable instead of sitting in a straight column.
+
+   Carried as a float with a sloped shape rather than six hand-placed lines, so
+   the copy still wraps, reflows and can be translated. The first 12.5% of the
+   shape is vertical on purpose: a line box takes its indent from the shape's
+   widest point ANYWHERE in its band, i.e. from its bottom edge, so without a
+   flat start every line would sit one step too far right. The float runs
+   deeper than the six lines it needs to cover so a seventh line can't drop off
+   the bottom of the slope and snap back to the left. */
+@supports (shape-outside: polygon(0 0, 0 0, 0 0)) {
+  .about__copy::before {
+    content: '';
+    float: left;
+    width: 19.5%;
+    aspect-ratio: 117 / 192;
+    shape-outside: polygon(0 0, 0 12.5%, 100% 100%, 0 100%);
+    shape-margin: 0;
+  }
 }
 
 .about__copy p {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(11px, 1.11vw, 16px);
-  letter-spacing: -0.05em;
-  line-height: 1.5;
+  /* 15px/24px at the design's 1440 -- the comp's 61-character first line
+     measures 548px, which is Space Mono at 15px. The 24px advance is what the
+     slope above is cut for. */
+  font-size: clamp(11px, 1.0417vw, 15px);
+  line-height: 1.6;
 }
 
 .about__copy strong {
@@ -111,13 +139,18 @@
   font-weight: 400;
   font-size: 1.25em;
   letter-spacing: 0;
+  /* 1.25em x 1.28 == the paragraph's own 24px line box. Left to inherit the
+     1.6 factor it would compute against its own larger size and make the
+     first line 30px tall, which drops every line one notch further down the
+     slope above -- the whole block then sits a few px right of the design. */
+  line-height: 1.28;
 }
 
-/* Figma leaves a ~33px gap between the paragraphs and starts the second one
-   ~65px further right than the first. */
+/* Figma leaves 46px between the two paragraphs' first lines -- one 24px line
+   advance plus 22px of gap. The step to the right that used to be faked here
+   now comes from the slope above, which keeps going across the break. */
 .about__copy p + p {
-  margin-top: 2em;
-  padding-left: 12%;
+  margin-top: 1.4667em;
 }
 
 /* ---- olive date card ---- */
@@ -171,6 +204,14 @@
     inset: 0 auto auto 0;
     width: 100%;
     height: 100%;
+  }
+
+  /* Dim it as the LANDED state, not unconditionally. Setting opacity on the
+     layer itself outranks .rv's own opacity:0, so the backdrop painted before
+     it had landed -- still carrying the reveal's 34px drop and 1.03 scale,
+     which left a 25px band of bare cream across the top of the section and
+     read as the photo not filling its frame. */
+  .about__stage .layer.is-in {
     opacity: 0.55;
   }
 
@@ -208,10 +249,18 @@
     font-size: 15px;
   }
 
-  /* the indent is a desktop composition detail; drop it on narrow screens */
+  /* the cable slope and the hand-set rag are desktop composition details;
+     drop both and let the copy reflow as an ordinary column */
+  .about__copy::before {
+    display: none;
+  }
+
+  .about__copy br {
+    display: none;
+  }
+
   .about__copy p + p {
     margin-top: 1em;
-    padding-left: 0;
   }
 
   .about__date > div {

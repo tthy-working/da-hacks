@@ -1,14 +1,17 @@
 import Reveal from './Reveal'
 
-/* Background collage layers, back to front. Geometry lives in hero.css --
-   this array only controls the order and the stagger. */
+/* Background collage layers, back to front -- this is the design's own paint
+   order (36, 39, 38, 41, 37, 40), and layer 40 belongs at the FRONT: its
+   tree, cliff and cactus overlay the bridge and the grass rather than sitting
+   behind them. Geometry lives in hero.css; this array only controls the order
+   and the stagger. */
 const LAYERS = [
   { cls: 'hero__l36', src: 'layer-36.png', delay: 0 },
-  { cls: 'hero__l40', src: 'layer-40.png', delay: 70, inner: true },
-  { cls: 'hero__l39', src: 'layer-39.png', delay: 140, crop: true },
-  { cls: 'hero__l38', src: 'layer-38.png', delay: 200, crop: true },
-  { cls: 'hero__l41', src: 'layer-41.png', delay: 260, crop: true },
-  { cls: 'hero__l37', src: 'layer-37.png', delay: 320, inner: true },
+  { cls: 'hero__l39', src: 'layer-39.png', delay: 70, crop: true },
+  { cls: 'hero__l38', src: 'layer-38.png', delay: 140, crop: true },
+  { cls: 'hero__l41', src: 'layer-41.png', delay: 200, crop: true },
+  { cls: 'hero__l37', src: 'layer-37.png', delay: 260, inner: true },
+  { cls: 'hero__l40', src: 'layer-40.png', delay: 320, inner: true },
 ]
 
 /* The wordmark, letter by letter, so each scrap of paper lands on its own
