@@ -167,11 +167,16 @@
   font-family: var(--font-body);
 }
 
-.hero__mark .m-d     { left: 8.35cqw;  top: -2.73cqw; font-size: 23.28cqw; }
-.hero__mark .m-a     { left: 13.01cqw; top: 12.85cqw; font-size: 23.28cqw; }
-.hero__mark .m-e     { left: 21.36cqw; top: 5.46cqw;  font-size: 11.56cqw; }
-.hero__mark .m-nza   { left: 28.90cqw; top: 21.68cqw; font-size: 11.56cqw; }
-.hero__mark .m-hacks { left: 29.71cqw; top: 1.45cqw;  font-size: 24.89cqw; }
+/* Tops carry a shared +1.6cqw over the design's own offsets (-2.73, 12.85,
+   5.46, 21.68, 1.45). Figma's numbers are the text BOXES, and the webfont
+   seats its ink higher in the box than the file's own rendering does, so at
+   the literal values the caps sat right against the top edge of the paper.
+   The nudge is uniform, so the lockup's internal spacing is untouched. */
+.hero__mark .m-d     { left: 8.35cqw;  top: -1.13cqw; font-size: 23.28cqw; }
+.hero__mark .m-a     { left: 13.01cqw; top: 14.45cqw; font-size: 23.28cqw; }
+.hero__mark .m-e     { left: 21.36cqw; top: 7.06cqw;  font-size: 11.56cqw; }
+.hero__mark .m-nza   { left: 28.90cqw; top: 23.28cqw; font-size: 11.56cqw; }
+.hero__mark .m-hacks { left: 29.71cqw; top: 3.05cqw;  font-size: 24.89cqw; }
 
 /* ---- the 5.0 starburst ---- */
 /* Both this and .hero__ver are rotated in the design. Figma reports a rotated
