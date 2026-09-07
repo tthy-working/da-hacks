@@ -130,7 +130,12 @@
   left: 48.958%;
   top: 25.917%;
   width: 43.246%;
-  height: 28.521%;
+  /* Aspect, not a % of the stage height. The paper cards are sized off this
+     box while the letters are sized in cqw off its WIDTH, so on any stage
+     that is not the design's 1.704:1 a percentage height stretched the cards
+     and left the lettering floating inside them -- at the tablet 3:2 the box
+     came out at 2.27:1 against the design's 2.58:1. */
+  aspect-ratio: 622.746 / 241;
   z-index: 3;
   /* cqw below is a % of THIS box's width, so the whole lockup -- letter
      positions and sizes together -- scales as a single unit. */
@@ -179,7 +184,9 @@
   left: 71.528%;
   top: 47.692%;
   width: 25.363%;
-  height: 38.179%;
+  /* same reason as .hero__mark: the starburst bitmap is object-fit:fill
+     inside this box, so a percentage height squashed the star */
+  aspect-ratio: 365.222 / 322.614;
   z-index: 4;
   display: flex;
   align-items: center;
@@ -217,7 +224,7 @@
   left: 75.695%;
   top: 57.751%;
   width: 17.237%;
-  height: 23.694%;
+  aspect-ratio: 248.213 / 200.205;
   z-index: 5;
   display: flex;
   align-items: center;
