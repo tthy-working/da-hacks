@@ -9,6 +9,7 @@ export default function Sponsors() {
   return (
     <section className="section sponsors" id="sponsors" aria-labelledby="sponsors-title">
       <div className="sponsors__stage">
+        <div className="scenery sponsors__scenery" aria-hidden="true">
         <Reveal
           className="layer sponsors__l36"
           variant="sheet"
@@ -26,6 +27,7 @@ export default function Sponsors() {
         >
           <img src="/assets/layer-39.png" alt="" />
         </Reveal>
+        </div>
 
         <Reveal as="h2" className="sponsors__title wordmark wordmark--sponsors" variant="left snap" delay={180} id="sponsors-title">
           Our Sponsors

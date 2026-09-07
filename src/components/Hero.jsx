@@ -28,7 +28,10 @@ export default function Hero() {
   return (
     <section className="section hero" id="top">
       <div className="hero__stage">
-        {LAYERS.map((l) => (
+        {/* The collage lives in its own aspect-locked box so it can cover a
+            stage that has been capped to the viewport height. */}
+        <div className="scenery hero__scenery" aria-hidden="true">
+          {LAYERS.map((l) => (
           <Reveal
             key={l.cls}
             className={`layer ${l.cls}${l.crop ? ' layer--crop' : ''}`}
@@ -44,7 +47,8 @@ export default function Hero() {
               <img src={`/assets/${l.src}`} alt="" />
             )}
           </Reveal>
-        ))}
+          ))}
+        </div>
 
         {/* white paper cards + wordmark */}
         <div className="hero__mark">

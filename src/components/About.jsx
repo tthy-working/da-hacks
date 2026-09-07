@@ -12,7 +12,8 @@ export default function About() {
   return (
     <section className="section about" id="about" aria-labelledby="about-title">
       <div className="about__stage">
-        {LAYERS.map((l) => (
+        <div className="scenery about__scenery" aria-hidden="true">
+          {LAYERS.map((l) => (
           <Reveal
             key={l.cls}
             className={`layer ${l.cls}${l.crop ? ' layer--crop' : ''}`}
@@ -28,7 +29,8 @@ export default function About() {
               <img src={`/assets/${l.src}`} alt="" />
             )}
           </Reveal>
-        ))}
+          ))}
+        </div>
 
         <Reveal className="about__title" variant="left snap" delay={300}>
           <p className="wordmark wordmark--about" id="about-title">

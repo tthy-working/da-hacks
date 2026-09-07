@@ -16,14 +16,16 @@ export default function Agenda() {
   return (
     <section className="section agenda" id="agenda" aria-labelledby="agenda-title">
       <div className="agenda__stage">
-        <Reveal
-          className="layer agenda__grass"
-          variant="sheet"
-          delay={0}
-          aria-hidden="true"
-        >
-          <img src="/assets/agenda-grass.png" alt="" />
-        </Reveal>
+        <div className="scenery agenda__scenery" aria-hidden="true">
+          <Reveal
+            className="layer agenda__grass"
+            variant="sheet"
+            delay={0}
+            aria-hidden="true"
+          >
+            <img src="/assets/agenda-grass.png" alt="" />
+          </Reveal>
+        </div>
 
         <h2 className="sr-title" id="agenda-title">
           Agenda
