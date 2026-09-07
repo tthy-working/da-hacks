@@ -1,23 +1,12 @@
 /* =========================================================================
    Sponsors (Figma "screen 3", 1440x832)
-   -------------------------------------------------------------------------
-   Desktop type here is sized against the SHORTER of width and height. The
-   blocks are placed by percentage but text has a height of its own, so once
-   the stage is capped to a short viewport the two stop agreeing and the type
-   runs into whatever sits below it. On the design's 1440x832 canvas 1vw is
-   14.4px and 1svh is 8.32px, which is where the svh figures come from.
    ========================================================================= */
 .sponsors__stage {
   position: relative;
   width: 100%;
   aspect-ratio: 1440 / 832;
-  max-height: max(100svh, 620px);
   overflow: hidden;
   background: var(--cream);
-}
-
-.sponsors__scenery {
-  aspect-ratio: 1440 / 832;
 }
 
 .sponsors__l36 {
@@ -44,7 +33,7 @@
   width: 42.292%;
   z-index: 3;
   margin: 0;
-  font-size: clamp(44px, min(7.57vw, 13.1svh), 109px);
+  font-size: clamp(44px, 7.57vw, 109px);
 }
 
 /* ---- placeholder logo wall ----
@@ -67,7 +56,7 @@
   aspect-ratio: 16 / 9;
   background: rgba(255, 255, 255, 0.88);
   box-shadow: var(--shadow-paper-sm);
-  font-size: clamp(9px, min(0.9vw, 1.5625svh), 13px);
+  font-size: clamp(9px, 0.9vw, 13px);
   letter-spacing: 0.04em;
   color: #8b8b8b;
   text-align: center;
@@ -83,7 +72,7 @@
   left: 38.958%;
   top: 83.589%;
   width: 58.889%;
-  aspect-ratio: 848 / 72.263;
+  height: 8.686%;
   z-index: 2;
 }
 
@@ -96,7 +85,7 @@
   margin: 0;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: clamp(12px, min(1.53vw, 2.64svh), 22px);
+  font-size: clamp(12px, 1.53vw, 22px);
   color: var(--ink);
 }
 
@@ -105,7 +94,7 @@
   left: 67.767%;
   top: 83.293%;
   width: 16.229%;
-  aspect-ratio: 233.696 / 75.83;
+  height: 9.114%;
   z-index: 4;
   display: flex;
   align-items: center;

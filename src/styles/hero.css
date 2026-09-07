@@ -16,14 +16,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1440 / 845;
-  /* One screenful, never more: past this the stage stops growing with the
-     width and the scenery crops instead. */
-  max-height: 100svh;
   overflow: hidden;
-}
-
-.hero__scenery {
-  aspect-ratio: 1440 / 845;
 }
 
 /* ---- collage photo layers, back to front ---- */
@@ -131,10 +124,7 @@
   left: 48.958%;
   top: 25.917%;
   width: 43.246%;
-  /* aspect, not a % of the stage: the stage can now be shorter than the
-     design's proportions, and a percentage height would squash the cards
-     while the letters -- sized in cqw -- kept their size and spilled out */
-  aspect-ratio: 622.746 / 241;
+  height: 28.521%;
   z-index: 3;
   /* cqw below is a % of THIS box's width, so the whole lockup -- letter
      positions and sizes together -- scales as a single unit. */
@@ -183,7 +173,7 @@
   left: 71.528%;
   top: 47.692%;
   width: 25.363%;
-  aspect-ratio: 365.222 / 322.614;
+  height: 38.179%;
   z-index: 4;
   display: flex;
   align-items: center;
@@ -221,7 +211,7 @@
   left: 75.695%;
   top: 57.751%;
   width: 17.237%;
-  aspect-ratio: 248.213 / 200.205;
+  height: 23.694%;
   z-index: 5;
   display: flex;
   align-items: center;

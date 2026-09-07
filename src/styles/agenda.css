@@ -3,24 +3,13 @@
    -------------------------------------------------------------------------
    The design ships the backdrop and the title only -- the schedule cards
    below are new. Timings live in src/data/agenda.js.
-   -------------------------------------------------------------------------
-   Desktop type here is sized against the SHORTER of width and height. The
-   blocks are placed by percentage but text has a height of its own, so once
-   the stage is capped to a short viewport the two stop agreeing and the type
-   runs into whatever sits below it. On the design's 1440x832 canvas 1vw is
-   14.4px and 1svh is 8.32px, which is where the svh figures come from.
    ========================================================================= */
 .agenda__stage {
   position: relative;
   width: 100%;
   aspect-ratio: 1440 / 832;
-  max-height: max(100svh, 620px);
   overflow: hidden;
   background: var(--cream);
-}
-
-.agenda__scenery {
-  aspect-ratio: 1440 / 832;
 }
 
 .agenda__grass {
@@ -38,7 +27,7 @@
   left: 2.488%;
   top: 19.471%;
   width: 27.889%;
-  aspect-ratio: 401.614 / 232.499;
+  height: 27.945%;
   z-index: 3;
   container-type: inline-size;
 }
@@ -84,7 +73,7 @@
   margin: 0 0 0.5em;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(19px, min(2.36vw, 4.09svh), 34px);
+  font-size: clamp(19px, 2.36vw, 34px);
   line-height: 1;
   color: var(--purple);
 }
@@ -102,7 +91,7 @@
   grid-template-columns: minmax(58px, 5.6em) 1fr;
   gap: clamp(6px, 0.9vw, 14px);
   align-items: baseline;
-  font-size: clamp(9.5px, min(1.04vw, 1.8svh), 15px);
+  font-size: clamp(9.5px, 1.04vw, 15px);
   line-height: 1.35;
   padding-bottom: clamp(3px, 0.4vw, 6px);
   border-bottom: 1px dashed rgba(78, 42, 112, 0.22);
@@ -135,7 +124,7 @@
   width: 27%;
   z-index: 4;
   margin: 0;
-  font-size: clamp(9.5px, min(1.04vw, 1.68svh), 14px);
+  font-size: clamp(9.5px, 1.04vw, 14px);
   line-height: 1.5;
   color: #21351f;
   background: rgba(255, 255, 255, 0.8);

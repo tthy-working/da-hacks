@@ -5,17 +5,8 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1440 / 845;
-  /* One screenful -- but with a floor. These sections carry real text at a
-     fixed size, and their blocks are placed by percentage: squeeze the stage
-     much under 620px and the copy runs into the date card. Below that the
-     section keeps its height and you scroll the last of it. */
-  max-height: max(100svh, 620px);
   overflow: hidden;
   background: var(--cream);
-}
-
-.about__scenery {
-  aspect-ratio: 1440 / 845;
 }
 
 .about__l36 { left: -4.92%;   top: -23.44%; width: 147.97%; height: 128.13%; }
@@ -71,7 +62,7 @@
   left: 12.788%;
   top: 3.421%;
   width: 32.061%;
-  aspect-ratio: 461.676 / 370.716;
+  height: 43.872%;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -138,15 +129,8 @@
   color: var(--ink);
   /* 15px/24px at the design's 1440 -- the comp's 61-character first line
      measures 548px, which is Space Mono at 15px. The 24px advance is what the
-     slope above is cut for.
-
-     Tied to the SHORTER of width and height. The blocks in this section are
-     placed by percentage but the copy has a real height of its own, so once
-     the stage is capped to a short viewport the two stop agreeing and the
-     text runs into the date card -- at 1400x640 it overlapped it by 28px.
-     1.66svh leaves the date card clear at every height (15px at the
-     design's 845 would be 1.775svh, trimmed for margin). */
-  font-size: clamp(11px, min(1.0417vw, 1.66svh), 15px);
+     slope above is cut for. */
+  font-size: clamp(11px, 1.0417vw, 15px);
   line-height: 1.6;
 }
 
@@ -175,7 +159,7 @@
   right: 5.304%;
   top: 55.148%;
   width: 32.127%;
-  aspect-ratio: 462.622 / 102.363;
+  height: 12.114%;
   z-index: 3;
   display: flex;
   align-items: center;

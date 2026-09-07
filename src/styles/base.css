@@ -82,26 +82,6 @@ button {
    <= 400px   type and spacing step down again for small phones
    Nav collapses to a burger at <= 1040px. */
 
-/* The collage box.
-   -------------------------------------------------------------------------
-   A stage is capped to the viewport height (see each section), so it is no
-   longer guaranteed to hold the design's proportions. The scenery keeps them:
-   it is aspect-locked, full width, and centred, so when the stage is capped it
-   simply overflows top and bottom and gets clipped -- the same framing a
-   background-size:cover photo would give. Every .layer inside it therefore
-   still measures its percentages against the design's own canvas.
-
-   The section's own content sits OUTSIDE this box, in the stage's space, so it
-   compresses with the viewport instead of being cropped away with the art. */
-.scenery {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  translate: 0 -50%;
-  width: 100%;
-  z-index: 0;
-}
-
 /* Full-bleed collage layer. The design stacks torn-paper photo layers at
    odd offsets; each one keeps its own % box and covers within it. */
 .layer {
