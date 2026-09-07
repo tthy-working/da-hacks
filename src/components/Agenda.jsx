@@ -1,5 +1,5 @@
 import Reveal from './Reveal'
-import { AGENDA } from '../data/agenda'
+import { AGENDA, VENUE } from '../data/agenda'
 
 /* Rotations come from the Figma letter nodes -- the word arcs down to the
    right, so each letter keeps its own angle. */
@@ -71,8 +71,8 @@ export default function Agenda() {
         </div>
 
         <Reveal as="p" className="agenda__note" variant="up" delay={600} settle={-1.4}>
-          Times are a draft and will shift a little before the weekend. Follow{' '}
-          <strong>@deanzahacks</strong> for the final call sheet.
+          Doors 8:00 AM both days. {VENUE}. Follow <strong>@deanzahacks</strong> on Discord for
+          anything that moves on the day.
         </Reveal>
       </div>
     </section>

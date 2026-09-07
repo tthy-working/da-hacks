@@ -1,37 +1,44 @@
 /**
- * PLACEHOLDER SCHEDULE.
- * The Figma file has no agenda content -- only the backdrop and the title --
- * so these times are invented to give the section real structure. Replace
- * with the confirmed 5.0 schedule before launch.
+ * The confirmed 5.0 run of show, from the organisers' call sheet.
  *
- * `key: true` highlights a row (ceremonies, deadlines, demos).
+ * Attendee-facing only. The call sheet is a working document and carries the
+ * crew's own rows -- setup and clean-up blocks, "arrive two hours prior",
+ * "test projectors", "check equipment with Di", laying out the check-in table
+ * -- which belong on a clipboard rather than the public schedule. Everything
+ * a hacker turns up for is here.
+ *
+ * `key: true` highlights a row (ceremonies, deadlines, judging).
  */
 export const AGENDA = [
   {
     day: 'Saturday, Oct. 16',
     events: [
-      { time: '9:00 AM', what: 'Check-in & breakfast', key: false },
-      { time: '10:30 AM', what: 'Opening ceremony', key: true },
-      { time: '11:15 AM', what: 'Team formation mixer', key: false },
-      { time: '12:00 PM', what: 'Hacking begins', key: true },
+      { time: '8:00 AM', what: 'Check-in, lanyards & merch', key: false },
+      { time: '8:00 AM', what: 'Breakfast & mentor office hours open', key: false },
+      { time: '9:00 AM', what: 'Opening ceremony: welcome & guest speakers', key: true },
+      { time: '9:00 AM', what: 'Themes, tracks, rules & code of conduct', key: false },
+      { time: '10:30 AM', what: 'Hacking begins — team formation for solo hackers', key: true },
+      { time: '10:30 AM', what: 'Workshop 1', key: false },
+      { time: '11:15 AM', what: 'Workshop 2', key: false },
       { time: '1:00 PM', what: 'Lunch', key: false },
-      { time: '2:30 PM', what: 'Workshop: intro to APIs', key: false },
-      { time: '5:00 PM', what: 'Workshop: shipping your first demo', key: false },
-      { time: '7:00 PM', what: 'Dinner & sponsor fair', key: false },
-      { time: '10:00 PM', what: 'Midnight snack run', key: false },
+      { time: '6:00 PM', what: 'Dinner', key: false },
+      { time: '7:00 PM', what: 'Day 1 wrap-up & submission reminder', key: false },
     ],
   },
   {
     day: 'Sunday, Oct. 17',
     events: [
-      { time: '8:00 AM', what: 'Breakfast', key: false },
-      { time: '10:00 AM', what: 'Mentor office hours', key: false },
-      { time: '12:00 PM', what: 'Submissions due', key: true },
-      { time: '12:30 PM', what: 'Lunch', key: false },
-      { time: '1:30 PM', what: 'Project expo & judging', key: true },
-      { time: '3:30 PM', what: 'Finalist demos', key: false },
-      { time: '4:30 PM', what: 'Awards & closing', key: true },
-      { time: '5:30 PM', what: 'Clean-up & goodbyes', key: false },
+      { time: '8:00 AM', what: 'Day 2 check-in & breakfast', key: false },
+      { time: '8:00 AM', what: 'Mentor office hours', key: false },
+      { time: '12:00 PM', what: 'Submissions close on Devpost', key: true },
+      { time: '12:00 PM', what: 'Lunch in the Cafeteria', key: false },
+      { time: '1:15 PM', what: 'Judging', key: true },
+      { time: '6:30 PM', what: 'Closing: winners, track prizes & sponsor shoutouts', key: true },
+      { time: '6:30 PM', what: 'Group photo & feedback form', key: false },
+      { time: '8:00 PM', what: 'Doors close', key: false },
     ],
   },
 ]
+
+/** Where it all happens, from the same call sheet. */
+export const VENUE = 'Conf. Room A & B · Don Bautista & El Clemente · Cafeteria · Fireside Lounge'
