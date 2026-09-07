@@ -11,7 +11,37 @@ const LINKS = [
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const navRef = useRef(null)
+
+  /* Slide the bar out while the page is moving and bring it back once it
+     settles. There is no "scrollend" we can rely on across browsers, so the
+     rest state is a debounce on the last scroll event. */
+  useEffect(() => {
+    // Someone who asked for less motion should not get a bar that animates
+    // itself on every scroll -- leave it parked.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    // While the drop-down is open the panel is anchored to the bar, so hiding
+    // one would take the other with it.
+    if (open) {
+      setHidden(false)
+      return
+    }
+
+    let timer
+    const onScroll = () => {
+      setHidden(true)
+      clearTimeout(timer)
+      timer = setTimeout(() => setHidden(false), 180)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      clearTimeout(timer)
+    }
+  }, [open])
 
   // Close on Escape, and on any click outside the bar.
   useEffect(() => {
@@ -42,7 +72,13 @@ export default function NavBar() {
   }, [])
 
   return (
-    <nav ref={navRef} className={`nav${open ? ' is-open' : ''}`} aria-label="Main">
+    <nav
+      ref={navRef}
+      className={`nav${open ? ' is-open' : ''}${hidden ? ' is-hidden' : ''}`}
+      aria-label="Main"
+      /* keyboard users can tab into the bar while it is parked off-screen */
+      onFocus={() => setHidden(false)}
+    >
       <a className="nav__brand" href="#top">
         DA Hacks
       </a>
