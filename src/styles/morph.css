@@ -38,8 +38,12 @@
 }
 
 .scene.is-live {
-  /* how much scroll each leg is given */
-  --scene-distance: 170svh;
+  /* How much scroll each leg is given. Shorter reads snappier -- the camera
+     covers the same ground in less scrolling -- at the cost of moving further
+     per scroll step, which is what would start to look steppy on a mouse
+     wheel rather than a trackpad. 115svh is about as quick as this goes
+     before the 7x dive begins to jump. */
+  --scene-distance: 115svh;
 }
 
 .scene.is-live .scene__pin {
