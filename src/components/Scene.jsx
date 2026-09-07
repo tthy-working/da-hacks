@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import Hero from './Hero'
 import About from './About'
+import Sponsors from './Sponsors'
 
 /* Screen 1 smart-animating into screen 2, driven by scroll instead of drag.
    ---------------------------------------------------------------------------
@@ -10,8 +11,13 @@ import About from './About'
    real camera move -- most of all on layer 40, which goes from 560x966 to
    3809x6773 and turns the whole shot into a dive into the tree.
 
-   The pin holds screen 1 in place while the spacer scrolls past underneath;
-   `--p` is that progress, 0 to 1, and morph.css maps it onto each plate.
+   The pin holds a frame in place while a spacer scrolls past underneath, and
+   there are two of those in a row: `--p` carries screen 1 into screen 2, then
+   `--q` carries screen 2 into screen 3. morph.css maps each onto its plates.
+
+   The second leg is a different move from the first. Screens 2 and 3 share
+   only plates 36 and 39, and both travel LEFT -- the world sliding left is the
+   camera panning right -- so where the first leg dives in, this one turns.
 
    It only runs where the design's geometry is actually in play: at 1200px and
    under, About reflows into a stacked column that is nothing like screen 2's
@@ -39,30 +45,37 @@ export default function Scene() {
 
     if (!live) {
       el.style.removeProperty('--p')
-      el.classList.remove('is-past')
+      el.style.removeProperty('--q')
+      el.classList.remove('is-past', 'is-past-two')
       return
     }
 
     let frame = 0
 
+    // Figma's ease-out, as a curve on the scroll rather than on a clock. Each
+    // leg lands at 72% of its spacer, so the frame it arrives at gets a beat
+    // of stillness to be read instead of arriving and leaving in one motion.
+    const leg = (travelled, from, distance) =>
+      1 - (1 - Math.min(Math.max((travelled - from) / (distance * 0.72), 0), 1)) ** 2
+
     const update = () => {
       frame = 0
-      const spacer = el.querySelector('.scene__spacer')
-      const distance = spacer ? spacer.offsetHeight : 0
-      if (!distance) return
+      const spacers = el.querySelectorAll('.scene__spacer')
+      if (spacers.length < 2) return
+      const d1 = spacers[0].offsetHeight
+      const d2 = spacers[1].offsetHeight
+      if (!d1 || !d2) return
 
       // How far the scene's top has travelled above the viewport.
-      const travelled = Math.min(Math.max(-el.getBoundingClientRect().top, 0), distance)
+      const travelled = Math.min(Math.max(-el.getBoundingClientRect().top, 0), d1 + d2)
 
-      // Land the morph before the pin releases, so screen 2 gets a beat of
-      // stillness to be read rather than arriving and leaving in one motion.
-      const raw = Math.min(travelled / (distance * 0.72), 1)
-
-      // Figma's ease-out, as a curve on the scroll rather than on a clock.
-      const p = 1 - (1 - raw) * (1 - raw)
+      const p = leg(travelled, 0, d1)
+      const q = leg(travelled, d1, d2)
 
       el.style.setProperty('--p', p.toFixed(4))
+      el.style.setProperty('--q', q.toFixed(4))
       el.classList.toggle('is-past', p > 0.5)
+      el.classList.toggle('is-past-two', q > 0.5)
     }
 
     const onScroll = () => {
@@ -81,10 +94,31 @@ export default function Scene() {
 
   return (
     <div className={`scene${live ? ' is-live' : ''}`} ref={ref}>
+      {/* Anchors live out here, not on the sections. Inside the pin a section
+          is sticky-positioned, so its document offset moves as you scroll and
+          anything computed off it -- a negative scroll-margin, say -- lands
+          somewhere different every time. The scene is in normal flow, so an
+          offset measured from IT is stable: each marker sits at the end of
+          its own leg, where that frame has finished arriving. */}
+      {live && (
+        <>
+          <span className="scene__anchor" id="about" style={{ top: 'var(--scene-distance)' }} />
+          <span
+            className="scene__anchor"
+            id="sponsors"
+            style={{ top: 'calc(2 * var(--scene-distance))' }}
+          />
+        </>
+      )}
+
       <div className="scene__pin">
         <Hero />
-        <About />
+        {/* null, not undefined: a default parameter fills in for undefined,
+            which would put the id back and leave two of each in the page */}
+        <About anchorId={live ? null : 'about'} />
+        <Sponsors anchorId={live ? null : 'sponsors'} />
       </div>
+      <div className="scene__spacer" aria-hidden="true" />
       <div className="scene__spacer" aria-hidden="true" />
     </div>
   )

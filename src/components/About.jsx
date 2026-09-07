@@ -8,9 +8,9 @@ const LAYERS = [
   { cls: 'about__l40', src: 'layer-40.png', delay: 240, inner: true },
 ]
 
-export default function About() {
+export default function About({ anchorId = 'about' }) {
   return (
-    <section className="section about" id="about" aria-labelledby="about-title">
+    <section className="section about" id={anchorId} aria-labelledby="about-title">
       <div className="about__stage">
         {LAYERS.map((l) => (
           <Reveal

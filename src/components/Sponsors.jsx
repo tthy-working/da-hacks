@@ -5,9 +5,9 @@ import { CONTACT_EMAIL } from '../config'
    with { name, logo, href } and render an <img> once they're confirmed. */
 const SLOTS = ['Sponsor logo', 'Sponsor logo', 'Sponsor logo', 'Sponsor logo']
 
-export default function Sponsors() {
+export default function Sponsors({ anchorId = 'sponsors' }) {
   return (
-    <section className="section sponsors" id="sponsors" aria-labelledby="sponsors-title">
+    <section className="section sponsors" id={anchorId} aria-labelledby="sponsors-title">
       <div className="sponsors__stage">
         <Reveal
           className="layer sponsors__l36"
