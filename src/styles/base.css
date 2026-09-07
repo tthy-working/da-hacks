@@ -1,0 +1,152 @@
+/* ---- Design tokens (sampled from the Figma file) ---- */
+:root {
+  --purple: #4e2a70;
+  --cream: #ffe9c2;
+  --slate: #759da9;
+  --orange: #f89254;
+  --coral: #f46045;
+  --olive: #8ea345;
+  --ink: #1e1e1e;
+  --paper: #ffffff;
+
+  --font-display: 'Irish Grover', 'Comic Sans MS', cursive;
+  --font-body: 'Space Mono', ui-monospace, monospace;
+
+  --nav-h: clamp(60px, 5.6vw, 81px);
+  --gutter: clamp(20px, 5vw, 98px);
+
+  /* collage drop shadow used on the paper cut-outs in the design */
+  --shadow-paper: 14px 10px 4px rgba(0, 0, 0, 0.4);
+  --shadow-paper-sm: 6px 5px 3px rgba(0, 0, 0, 0.28);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* keep anchor targets clear of the fixed nav */
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.15vw, 16px);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* ---- shared section shell ---- */
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (max-width: 760px) {
+  .section {
+    min-height: auto;
+  }
+}
+
+/* Full-bleed collage layer. The design stacks torn-paper photo layers at
+   odd offsets; each one keeps its own % box and covers within it. */
+.layer {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: none;
+}
+
+/* ---- display headings: the big Irish Grover words with hard offset shadow ---- */
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+}
+
+.wordmark--about {
+  color: var(--paper);
+  text-shadow: -10px 4px 0 var(--orange);
+}
+
+.wordmark--sponsors {
+  color: var(--coral);
+  text-shadow: -10px 4px 0 var(--paper);
+}
+
+.wordmark--agenda {
+  color: var(--slate);
+  text-shadow: -7px 5px 0 var(--paper);
+}
+
+/* Screen readers / skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 10px 16px;
+  background: var(--purple);
+  color: #fff;
+}
+
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+}
+
+/* Visually hidden but read by screen readers and indexed -- used where the
+   visible text is a decorative collage of individually placed letters. */
+.sr-title,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,178 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 24px);
+  padding: 0 clamp(14px, 1.8vw, 26px);
+  /* the polka-dot paper strip the nav sits on */
+  background: #fdf6e8 url('/assets/nav-texture.png') center / auto 100% repeat-x;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.nav__brand {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.5vw, 36px);
+  color: var(--purple);
+  line-height: 1;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1.4vw, 22px);
+  flex: 1 1 auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Each pill is a different hand-painted brush stroke from the design. */
+  background: var(--brush) no-repeat center / 100% 100%;
+  /* The brush artwork has transparent margins inside its own box, so the pill
+     needs ~1.6x the text width (as in the design) or the label spills off the
+     painted stroke. */
+  padding: clamp(5px, 0.8vw, 11px) clamp(16px, 2.5vw, 36px);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(13px, 1.5vw, 22px);
+  color: #fff;
+  white-space: nowrap;
+  transition: transform 180ms cubic-bezier(0.33, 1.35, 0.5, 1);
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  transform: translateY(-2px) rotate(-1.2deg) scale(1.04);
+}
+
+.nav__link--about    { --brush: url('/assets/brush-about.svg'); }
+.nav__link--sponsors { --brush: url('/assets/brush-sponsors.svg'); }
+.nav__link--agenda   { --brush: url('/assets/brush-agenda.svg'); }
+.nav__link--faq      { --brush: url('/assets/brush-faq.svg'); }
+
+.nav__apply {
+  flex: 0 0 auto;
+  background: var(--purple);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.7vw, 24px);
+  line-height: 1;
+  padding: clamp(7px, 0.9vw, 11px) clamp(14px, 1.9vw, 28px);
+  transition:
+    transform 180ms cubic-bezier(0.33, 1.35, 0.5, 1),
+    background-color 180ms ease;
+}
+
+.nav__apply:hover,
+.nav__apply:focus-visible {
+  background: #63377f;
+  transform: translateY(-2px) rotate(1deg) scale(1.04);
+}
+
+/* ---- mobile ---- */
+.nav__burger {
+  display: none;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 34px;
+  padding: 6px;
+}
+
+.nav__burger span {
+  display: block;
+  height: 3px;
+  margin: 4px 0;
+  border-radius: 2px;
+  background: var(--purple);
+  transition: transform 220ms ease, opacity 160ms ease;
+}
+
+.nav.is-open .nav__burger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav.is-open .nav__burger span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav.is-open .nav__burger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+  .nav__burger {
+    display: block;
+  }
+
+  .nav__links {
+    position: fixed;
+    inset: var(--nav-h) 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 20px clamp(16px, 6vw, 40px) 28px;
+    background: #fdf6e8 url('/assets/nav-texture.png') center / auto 60px repeat;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+
+    /* collapsed */
+    transform: translateY(-12px);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      transform 260ms cubic-bezier(0.33, 1.2, 0.5, 1),
+      opacity 200ms ease,
+      visibility 0s linear 260ms;
+  }
+
+  .nav.is-open .nav__links {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s, 0s, 0s;
+  }
+
+  .nav__link {
+    font-size: 19px;
+    padding: 10px 22px;
+    /* stagger the pills in as the menu opens */
+    transform: translateX(-14px) rotate(-1.5deg);
+    opacity: 0;
+    transition:
+      transform 300ms cubic-bezier(0.33, 1.35, 0.5, 1) var(--i-delay, 0ms),
+      opacity 220ms ease var(--i-delay, 0ms);
+  }
+
+  .nav.is-open .nav__link {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  /* bar order on mobile: brand ... Apply, burger */
+  .nav__brand  { order: 1; }
+  .nav__apply  { order: 2; margin-left: auto; }
+  .nav__burger { order: 3; margin-left: 4px; }
+}
+
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .nav__links,
+  .nav__link {
+    transition: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav__apply {
+    font-size: 14px;
+    padding: 7px 12px;
+  }
+}

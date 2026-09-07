@@ -1,0 +1,287 @@
+/* =========================================================================
+   Hero (Figma "screen 1", 1440x845)
+   -------------------------------------------------------------------------
+   The stage is aspect-locked to the design so every layer below can use the
+   design's own percentages and the whole collage scales as one piece at any
+   width. Below 760px the stage re-proportions and the layers re-crop -- a
+   1.7:1 band is unreadable on a phone.
+   ========================================================================= */
+.hero {
+  display: flex;
+  align-items: center;
+  background: var(--cream);
+}
+
+.hero__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 845;
+  overflow: hidden;
+}
+
+/* ---- collage photo layers, back to front ---- */
+.hero__l36 {
+  left: -2.858%;
+  top: -5.089%;
+  width: 116.062%;
+  height: 114.083%;
+}
+
+.hero__l39 {
+  left: 60.486%;
+  top: 3.97%;
+  width: 47.229%;
+  height: 86.29%;
+}
+
+.hero__l38 {
+  left: -4.236%;
+  bottom: -7.456%;
+  width: 72.014%;
+  height: 70.178%;
+}
+
+.hero__l41 {
+  right: 0;
+  bottom: 0;
+  width: 47.986%;
+  height: 48.284%;
+}
+
+.hero__l37 {
+  left: -14.1%;
+  right: 35.58%;
+  bottom: -38.073%;
+  height: 82.688%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__l37 > div {
+  flex: none;
+  width: 95.78%;
+  height: 87.19%;
+  transform: rotate(4.86deg);
+}
+
+.hero__l40 {
+  left: 0;
+  bottom: -4.024%;
+  width: 38.889%;
+  height: 114.319%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__l40 > div {
+  flex: none;
+  /* rotated 90deg, so its pre-rotation box is stage-relative 966x560 */
+  width: 172.5%;
+  height: 58.0%;
+  transform: rotate(90deg);
+}
+
+/* Some layers are crops -- the design offsets the bitmap inside a smaller
+   window rather than scaling it. Preserve that or the framing shifts. */
+.layer--crop {
+  overflow: hidden;
+}
+
+.layer--crop img {
+  position: absolute;
+  object-fit: fill;
+}
+
+.hero__l39 img { left: -33.78%; top: 0; width: 190.45%; height: 100%; }
+.hero__l38 img { left: -8.96%; top: -5.82%; width: 116.32%; height: 114.43%; }
+.hero__l41 img { left: 0; top: -0.04%; width: 179.29%; height: 170.74%; }
+
+/* ---- the "De Anza Hacks" wordmark on its white paper cards ---- */
+.hero__mark {
+  position: absolute;
+  left: 48.958%;
+  top: 25.917%;
+  width: 43.246%;
+  height: 28.521%;
+  z-index: 3;
+  /* cqw below is a % of THIS box's width, so the whole lockup -- letter
+     positions and sizes together -- scales as a single unit. */
+  container-type: inline-size;
+}
+
+.hero__cards {
+  position: absolute;
+  inset: 0 -2.89% -5.81% 0;
+  width: 102.89%;
+  height: 105.81%;
+}
+
+.hero__mark span {
+  position: absolute;
+  color: var(--purple);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.hero__mark .m-d,
+.hero__mark .m-a,
+.hero__mark .m-hacks {
+  font-family: var(--font-display);
+}
+
+.hero__mark .m-e,
+.hero__mark .m-nza {
+  font-family: var(--font-body);
+}
+
+.hero__mark .m-d     { left: 8.35cqw;  top: -2.73cqw; font-size: 23.28cqw; }
+.hero__mark .m-a     { left: 13.01cqw; top: 12.85cqw; font-size: 23.28cqw; }
+.hero__mark .m-e     { left: 21.36cqw; top: 5.46cqw;  font-size: 11.56cqw; }
+.hero__mark .m-nza   { left: 28.90cqw; top: 21.68cqw; font-size: 11.56cqw; }
+.hero__mark .m-hacks { left: 29.71cqw; top: 1.45cqw;  font-size: 24.89cqw; }
+
+/* ---- the 5.0 starburst ---- */
+.hero__burst {
+  position: absolute;
+  left: 74.265%;
+  top: 47.692%;
+  width: 25.363%;
+  height: 38.179%;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__burst > div {
+  flex: none;
+  position: relative;
+  width: 90.12%;
+  height: 86.45%;
+  overflow: hidden;
+  transform: rotate(8.12deg);
+  box-shadow: 14px 10px 4px rgba(0, 0, 0, 0.45);
+}
+
+.hero__burst img {
+  position: absolute;
+  left: -50.07%;
+  top: -15.5%;
+  width: 212.43%;
+  height: 141%;
+  max-width: none;
+  object-fit: fill;
+}
+
+.hero__ver {
+  position: absolute;
+  left: 77.144%;
+  top: 57.751%;
+  width: 17.237%;
+  height: 23.694%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: inline-size;
+}
+
+.hero__ver p {
+  flex: none;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 51.57cqw;
+  line-height: 1;
+  color: var(--olive);
+  text-align: center;
+  transform: rotate(6.89deg);
+}
+
+.hero__ver .dot {
+  color: var(--ink);
+}
+
+/* =========================================================================
+   Mobile: re-proportion the stage and re-frame the collage so the wordmark
+   and the date stay legible instead of shrinking with the band.
+   ========================================================================= */
+@media (max-width: 760px) {
+  .hero__stage {
+    aspect-ratio: 4 / 5;
+    min-height: 78svh;
+  }
+
+  /* let the photo layers crop rather than squash */
+  .hero__l36 {
+    left: -30%;
+    top: -6%;
+    width: 165%;
+    height: 106%;
+  }
+
+  .hero__l39 {
+    left: 44%;
+    top: 2%;
+    width: 74%;
+    height: 58%;
+  }
+
+  .hero__l38 {
+    left: -22%;
+    bottom: -6%;
+    width: 116%;
+    height: 46%;
+  }
+
+  .hero__l41 {
+    right: -12%;
+    bottom: -2%;
+    width: 84%;
+    height: 34%;
+  }
+
+  .hero__l37 {
+    left: -34%;
+    right: 6%;
+    bottom: -26%;
+    height: 52%;
+  }
+
+  .hero__l40 {
+    left: -18%;
+    bottom: -3%;
+    width: 74%;
+    height: 88%;
+  }
+
+  /* wordmark: bigger, moved to the upper-centre where there's clear sky */
+  .hero__mark {
+    left: 6%;
+    top: 11%;
+    width: 86%;
+    height: 32%;
+  }
+
+  .hero__burst {
+    left: 52%;
+    top: 60%;
+    width: 44%;
+    height: 26%;
+  }
+
+  .hero__ver {
+    left: 57%;
+    top: 63.5%;
+    width: 30%;
+    height: 18%;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero__mark {
+    top: 9%;
+    width: 92%;
+  }
+}

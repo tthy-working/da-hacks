@@ -1,0 +1,204 @@
+/* =========================================================================
+   About (Figma "screen 2", 1440x845)
+   ========================================================================= */
+.about__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 845;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.about__l36 { left: -4.92%;   top: -23.44%; width: 147.97%; height: 128.13%; }
+.about__l39 { left: 81.41%;   top: -31.97%; width:  88.04%; height: 145.19%; }
+.about__l38 { left: -13.83%;  top: 18.27%;  width: 119.22%; height: 104.93%; }
+
+.about__l39 img { left: -33.78%; top: 0; width: 190.45%; height: 100%; }
+.about__l38 img { left: -8.96%; top: -5.82%; width: 116.32%; height: 114.43%; }
+
+.about__l37 {
+  left: -26.667%;
+  bottom: -55.115%;
+  width: 78.52%;
+  height: 82.688%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about__l37 > div {
+  flex: none;
+  width: 95.78%;
+  height: 87.19%;
+  transform: rotate(4.86deg);
+}
+
+/* Clipped to the top band on purpose. The canopy sits at the far left of a
+   16:9 source and the cliff at the far right, so the layer has to span the
+   full width for both corners to read -- but then its lower two-thirds would
+   sit over the body copy. The window crops it to just the hanging foliage. */
+.about__l40 {
+  left: -5%;
+  top: 0;
+  width: 112%;
+  height: 22%;
+  overflow: hidden;
+  /* feather the crop so it reads as foliage thinning out rather than a
+     straight cut across the section */
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+}
+
+.about__l40 img {
+  position: absolute;
+  left: 0;
+  top: -136.4%;
+  width: 100%;
+  height: 481.8%;
+  object-fit: cover;
+}
+
+/* ---- the rotated "About" word ---- */
+.about__title {
+  position: absolute;
+  left: 12.788%;
+  top: 3.421%;
+  width: 32.061%;
+  height: 43.872%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: inline-size;
+}
+
+.about__title p {
+  flex: none;
+  margin: 0;
+  font-size: 23.61cqw;
+  transform: rotate(-32.68deg);
+  white-space: nowrap;
+}
+
+/* ---- body copy ----
+   The design has this as six separately positioned single-line text nodes.
+   Rebuilt as one flowing paragraph so it reflows, wraps and translates. */
+.about__copy {
+  position: absolute;
+  left: 44.6%;
+  top: 30.4%;
+  width: 40.5%;
+  z-index: 3;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(11px, 1.11vw, 16px);
+  letter-spacing: -0.05em;
+  line-height: 1.5;
+}
+
+.about__copy strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25em;
+  letter-spacing: 0;
+}
+
+.about__copy + .about__copy {
+  margin-top: 0.9em;
+}
+
+/* ---- olive date card ---- */
+.about__date {
+  position: absolute;
+  right: 5.304%;
+  top: 55.148%;
+  width: 32.127%;
+  height: 12.114%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: inline-size;
+}
+
+.about__date > div {
+  flex: none;
+  width: 99.71%;
+  height: 93.37%;
+  display: grid;
+  place-items: center;
+  background: var(--olive);
+  box-shadow: var(--shadow-paper);
+  transform: rotate(-0.84deg);
+}
+
+.about__date p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 11.24cqw;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  transform: rotate(0.39deg);
+}
+
+/* ---- mobile: drop the collage to a backdrop and let the text lead ---- */
+@media (max-width: 760px) {
+  .about__stage {
+    aspect-ratio: auto;
+    min-height: auto;
+    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .about__stage .layer {
+    /* keep the paper texture, lose the precise collage geometry */
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+  }
+
+  .about__l39,
+  .about__l40 {
+    display: none;
+  }
+
+  .about__title,
+  .about__copy,
+  .about__date {
+    position: static;
+    width: 100%;
+    height: auto;
+    inset: auto;
+  }
+
+  .about__title {
+    display: block;
+  }
+
+  .about__title p {
+    transform: rotate(-6deg);
+    font-size: clamp(52px, 17vw, 96px);
+    text-align: center;
+  }
+
+  .about__copy {
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.82);
+    padding: 16px 18px;
+    box-shadow: var(--shadow-paper-sm);
+  }
+
+  .about__date > div {
+    width: 100%;
+    height: auto;
+    padding: 14px 10px;
+  }
+
+  .about__date p {
+    font-size: clamp(26px, 7vw, 44px);
+  }
+}

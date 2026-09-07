@@ -1,0 +1,178 @@
+/* =========================================================================
+   Agenda (Figma "screen 4", 1440x832)
+   -------------------------------------------------------------------------
+   The design ships the backdrop and the title only -- the schedule cards
+   below are new. Timings live in src/data/agenda.js.
+   ========================================================================= */
+.agenda__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 832;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.agenda__grass {
+  left: -0.833%;
+  top: 18.75%;
+  width: 101.597%;
+  height: 98.918%;
+}
+
+/* ---- the arc of "Agenda" letters ----
+   In Figma this is twelve text nodes: a white set with a #759da9 set laid 7px
+   down-right of it. Rebuilt as six letters with a hard offset text-shadow. */
+.agenda__title {
+  position: absolute;
+  left: 2.488%;
+  top: 19.471%;
+  width: 27.889%;
+  height: 27.945%;
+  z-index: 3;
+  container-type: inline-size;
+}
+
+.agenda__title span {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 27.14cqw;
+  line-height: 1;
+  color: var(--slate);
+  text-shadow: -7px -3px 0 #fff;
+}
+
+.agenda__title .a1 { left: 0;        top: 0.48cqw;  transform: rotate(-3.11deg); }
+.agenda__title .a2 { left: 18.47cqw; top: 0;        transform: rotate(5.76deg); }
+.agenda__title .a3 { left: 33.41cqw; top: 2.49cqw;  transform: rotate(12.78deg); }
+.agenda__title .a4 { left: 45.11cqw; top: 8.96cqw;  transform: rotate(22.9deg); }
+.agenda__title .a5 { left: 58.81cqw; top: 14.69cqw; transform: rotate(30.81deg); }
+.agenda__title .a6 { left: 71.89cqw; top: 24.03cqw; transform: rotate(27.04deg); }
+
+/* ---- schedule ---- */
+.agenda__days {
+  position: absolute;
+  left: 34%;
+  top: 13%;
+  width: 60%;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(12px, 1.8vw, 26px);
+}
+
+.agenda__day {
+  background: rgba(255, 255, 255, 0.93);
+  box-shadow: var(--shadow-paper);
+  padding: clamp(12px, 1.5vw, 22px) clamp(13px, 1.6vw, 24px);
+}
+
+.agenda__day:nth-child(1) { transform: rotate(-1.2deg); }
+.agenda__day:nth-child(2) { transform: rotate(1deg); }
+
+.agenda__day h3 {
+  margin: 0 0 0.5em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(19px, 2.36vw, 34px);
+  line-height: 1;
+  color: var(--purple);
+}
+
+.agenda__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: clamp(4px, 0.55vw, 9px);
+}
+
+.agenda__row {
+  display: grid;
+  grid-template-columns: minmax(58px, 5.6em) 1fr;
+  gap: clamp(6px, 0.9vw, 14px);
+  align-items: baseline;
+  font-size: clamp(9.5px, 1.04vw, 15px);
+  line-height: 1.35;
+  padding-bottom: clamp(3px, 0.4vw, 6px);
+  border-bottom: 1px dashed rgba(78, 42, 112, 0.22);
+}
+
+.agenda__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.agenda__time {
+  font-weight: 700;
+  color: var(--coral);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.agenda__row--key .agenda__time {
+  color: var(--purple);
+}
+
+.agenda__row--key .agenda__what {
+  font-weight: 700;
+}
+
+.agenda__note {
+  position: absolute;
+  left: 3%;
+  bottom: 5%;
+  width: 27%;
+  z-index: 4;
+  margin: 0;
+  font-size: clamp(9.5px, 1.04vw, 14px);
+  line-height: 1.5;
+  color: #21351f;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 13px;
+  box-shadow: var(--shadow-paper-sm);
+  transform: rotate(-1.4deg);
+}
+
+/* ---- mobile ---- */
+@media (max-width: 860px) {
+  .agenda__days {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .agenda__stage {
+    aspect-ratio: auto;
+    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .agenda__grass {
+    left: -20%;
+    top: auto;
+    bottom: -4%;
+    width: 140%;
+    height: 46%;
+  }
+
+  .agenda__title {
+    position: static;
+    width: 100%;
+    height: clamp(120px, 34vw, 200px);
+    inset: auto;
+  }
+
+  .agenda__days,
+  .agenda__note {
+    position: static;
+    width: 100%;
+    inset: auto;
+  }
+
+  .agenda__row {
+    font-size: 13.5px;
+    grid-template-columns: minmax(66px, 6em) 1fr;
+  }
+}

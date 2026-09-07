@@ -1,0 +1,181 @@
+/* =========================================================================
+   Paper-collage reveal system
+   -------------------------------------------------------------------------
+   Elements enter like cut-paper pieces being laid onto the page: they drop
+   in slightly off-angle, overshoot, then settle. Tuned faster than a real
+   stop-motion paper animation (~380-460ms per piece, ~70ms stagger) so the
+   page never feels like it's waiting on itself.
+
+   Per-element knobs (set inline or in a variant class):
+     --rv-x / --rv-y   where the piece starts, relative to its resting spot
+     --rv-rot          extra tilt it starts at, on top of --rv-settle
+     --rv-scale        start scale
+     --rv-settle       the piece's RESTING rotation (from the Figma design) --
+                       always set this when a layer is rotated in the design,
+                       otherwise the reveal will flatten it to 0deg
+     --rv-dur          duration
+     --rv-delay        stagger delay
+   ========================================================================= */
+
+.rv {
+  --rv-x: 0px;
+  --rv-y: 26px;
+  --rv-rot: 0deg;
+  --rv-scale: 0.965;
+  --rv-settle: 0deg;
+  --rv-dur: 420ms;
+  --rv-delay: 0ms;
+
+  opacity: 0;
+  transform: translate3d(var(--rv-x), var(--rv-y), 0) rotate(calc(var(--rv-settle) + var(--rv-rot)))
+    scale(var(--rv-scale));
+  transition:
+    opacity 240ms linear var(--rv-delay),
+    transform var(--rv-dur) cubic-bezier(0.33, 1.35, 0.5, 1) var(--rv-delay);
+}
+
+.rv.is-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(var(--rv-settle)) scale(1);
+}
+
+/* Only promote while the piece is actually moving. */
+.rv:not(.is-in),
+.rv.is-moving {
+  will-change: transform, opacity;
+}
+
+/* ---- direction / character variants ---- */
+
+/* laid down from above */
+.rv--drop {
+  --rv-y: -38px;
+  --rv-rot: -2.5deg;
+}
+
+/* slid in from the edges */
+.rv--left {
+  --rv-x: -52px;
+  --rv-y: 10px;
+  --rv-rot: -2deg;
+}
+
+.rv--right {
+  --rv-x: 52px;
+  --rv-y: 10px;
+  --rv-rot: 2deg;
+}
+
+/* stamped straight down onto the page */
+.rv--pop {
+  --rv-y: 0px;
+  --rv-scale: 0.8;
+  --rv-dur: 380ms;
+}
+
+/* big background collage sheets: long, soft, barely-there drift */
+.rv--sheet {
+  --rv-y: 34px;
+  --rv-scale: 1.03;
+  --rv-dur: 700ms;
+  transition-timing-function: cubic-bezier(0.22, 0.68, 0.24, 1);
+}
+
+/* a torn strip flipping down on its top edge */
+.rv--flip {
+  --rv-y: 0px;
+  --rv-scale: 1;
+  transform-origin: 50% 0%;
+  transform: perspective(900px) rotateX(-72deg) rotate(var(--rv-settle));
+}
+
+.rv--flip.is-in {
+  transform: perspective(900px) rotateX(0deg) rotate(var(--rv-settle));
+}
+
+/* =========================================================================
+   Stop-motion snap -- for the hero cut-outs.
+   A keyframed entry instead of a transition, so it can overshoot twice and
+   land, the way a paper piece nudged under a camera does.
+   ========================================================================= */
+.rv--snap {
+  --rv-dur: 460ms;
+}
+
+.rv--snap.is-in {
+  animation: paperSnap var(--rv-dur) cubic-bezier(0.3, 1.2, 0.4, 1) var(--rv-delay) both;
+}
+
+@keyframes paperSnap {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--rv-x), var(--rv-y), 0)
+      rotate(calc(var(--rv-settle) + var(--rv-rot))) scale(var(--rv-scale));
+  }
+  45% {
+    opacity: 1;
+    transform: translate3d(0, calc(var(--rv-y) * -0.16), 0)
+      rotate(calc(var(--rv-settle) - 1.4deg)) scale(1.02);
+  }
+  72% {
+    opacity: 1;
+    transform: translate3d(0, 2px, 0) rotate(calc(var(--rv-settle) + 0.6deg)) scale(0.994);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(var(--rv-settle)) scale(1);
+  }
+}
+
+/* =========================================================================
+   Idle life -- a couple of hero pieces breathe so the collage never looks
+   like a flat screenshot. Deliberately tiny and slow.
+   ========================================================================= */
+/* `.sway.sway-ready` matches the specificity of `.rv--snap.is-in` (which also
+   sets `animation`) and sits later in this file, so it wins the cascade. */
+.sway.sway-ready {
+  animation: paperSway 7s ease-in-out infinite;
+}
+
+.sway.sway-ready.sway--slow {
+  animation-duration: 11s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes paperSway {
+  0%,
+  100% {
+    transform: rotate(var(--rv-settle)) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(calc(var(--rv-settle) + 0.7deg)) translate3d(0, -5px, 0);
+  }
+}
+
+/* Until .sway-ready is added by useReveal() the piece keeps whatever the
+   reveal gave it -- no rule needed, the selector above simply doesn't match. */
+
+/* =========================================================================
+   Accessibility -- honour the OS "reduce motion" setting completely.
+   Everything is simply present, no movement at all.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .rv,
+  .rv.is-in,
+  .rv--flip,
+  .rv--flip.is-in {
+    opacity: 1 !important;
+    transform: rotate(var(--rv-settle)) !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .sway,
+  .sway.sway-ready {
+    animation: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
