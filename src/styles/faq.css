@@ -35,9 +35,6 @@
   box-shadow: var(--shadow-paper-sm);
 }
 
-.faq__item:nth-child(odd)  { transform: rotate(-0.35deg); }
-.faq__item:nth-child(even) { transform: rotate(0.3deg); }
-
 .faq__q {
   width: 100%;
   display: flex;

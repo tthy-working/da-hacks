@@ -143,9 +143,14 @@
 .hero__mark .m-hacks { left: 29.71cqw; top: 1.45cqw;  font-size: 24.89cqw; }
 
 /* ---- the 5.0 starburst ---- */
+/* Both this and .hero__ver are rotated in the design. Figma reports a rotated
+   node's x/y as its rotated top-left CORNER but its width/height as the
+   axis-aligned bounding box, so using that x as the box's `left` pushes the
+   piece right by height*sin(angle) -- 39px here, 21px on the numerals. These
+   are the layout-box positions: 1030/1440 and 1090/1440. */
 .hero__burst {
   position: absolute;
-  left: 74.265%;
+  left: 71.528%;
   top: 47.692%;
   width: 25.363%;
   height: 38.179%;
@@ -177,7 +182,7 @@
 
 .hero__ver {
   position: absolute;
-  left: 77.144%;
+  left: 75.695%;
   top: 57.751%;
   width: 17.237%;
   height: 23.694%;
