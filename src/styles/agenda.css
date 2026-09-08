@@ -77,7 +77,7 @@
   font-size: 27.14cqw;
   line-height: 1;
   color: var(--slate);
-  text-shadow: -7px -3px 0 #fff;
+  text-shadow: -0.064em -0.028em 0 #fff;
 }
 
 .agenda__title .a1 { left: 0;        top: 0.48cqw;  transform: rotate(-3.11deg); }

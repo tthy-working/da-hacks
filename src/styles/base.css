@@ -98,7 +98,11 @@ button {
   max-width: none;
 }
 
-/* ---- display headings: the big Irish Grover words with hard offset shadow ---- */
+/* ---- display headings: the big Irish Grover words with hard offset shadow ----
+   Offsets are in em, not px. They were tuned against the design's ~109px
+   type; held in px they keep that size as the wordmark scales down, so on a
+   phone a 10px offset is 22% of a 45px word rather than 9% and the shadow
+   crowds the letters into mud. */
 .wordmark {
   font-family: var(--font-display);
   font-weight: 400;
@@ -108,17 +112,17 @@ button {
 
 .wordmark--about {
   color: var(--paper);
-  text-shadow: -10px 4px 0 var(--orange);
+  text-shadow: -0.092em 0.037em 0 var(--orange);
 }
 
 .wordmark--sponsors {
   color: var(--coral);
-  text-shadow: -10px 4px 0 var(--paper);
+  text-shadow: -0.092em 0.037em 0 var(--paper);
 }
 
 .wordmark--agenda {
   color: var(--slate);
-  text-shadow: -7px 5px 0 var(--paper);
+  text-shadow: -0.064em 0.046em 0 var(--paper);
 }
 
 /* Screen readers / skip link */
