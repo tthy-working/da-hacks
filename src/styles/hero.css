@@ -270,8 +270,13 @@
    ========================================================================= */
 @media (max-width: 640px) {
   .hero__stage {
-    aspect-ratio: 4 / 5;
-    min-height: 74svh;
+    /* One screenful, whatever the device. svh not vh or dvh: the small
+       viewport height is the one that does not change when the browser's own
+       chrome slides away, so the composition never jumps mid-scroll. The
+       collage crops to fill it rather than stretching -- plates are anchored
+       and oversized, so a taller phone shows more of them and a shorter one
+       shows less. */
+    height: 100svh;
   }
 
   /* let the photo layers crop rather than squash */

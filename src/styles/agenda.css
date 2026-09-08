@@ -190,6 +190,9 @@
 @media (max-width: 1200px) {
   .agenda__stage {
     aspect-ratio: auto;
+    /* min, not a fixed height: this screen is a schedule, so it matches the
+       others when it fits and grows past them rather than clipping rows. */
+    min-height: 100svh;
     padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
     display: flex;
     flex-direction: column;
