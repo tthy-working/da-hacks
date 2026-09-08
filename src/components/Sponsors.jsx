@@ -1,9 +1,9 @@
 import Reveal from './Reveal'
 import { CONTACT_EMAIL } from '../config'
 
-/* The design reserves a logo band but ships no logos yet. Replace each entry
-   with { name, logo, href } and render an <img> once they're confirmed. */
-const SLOTS = ['Sponsor logo', 'Sponsor logo', 'Sponsor logo', 'Sponsor logo']
+/* The design reserves a logo band but ships no logos yet, so the band says so
+   rather than standing four empty frames in it. When they are confirmed, drop
+   this card and render the logos here instead. */
 
 export default function Sponsors({ anchorId = 'sponsors' }) {
   return (
@@ -32,17 +32,10 @@ export default function Sponsors({ anchorId = 'sponsors' }) {
         </Reveal>
 
         <div className="sponsors__wall">
-          {SLOTS.map((label, i) => (
-            <Reveal
-              key={i}
-              className="sponsors__slot"
-              variant="pop snap"
-              delay={300 + i * 70}
-              settle={i % 2 === 0 ? -1.1 : 0.9}
-            >
-              {label}
-            </Reveal>
-          ))}
+          <Reveal className="sponsors__soon" variant="pop snap" delay={300} settle={-1.1}>
+            <strong>Sponsors coming soon</strong>
+            <span>This year&rsquo;s partners are being confirmed.</span>
+          </Reveal>
         </div>
 
         <Reveal
