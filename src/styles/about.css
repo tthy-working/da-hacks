@@ -328,3 +328,118 @@
     font-size: clamp(26px, 7vw, 44px);
   }
 }
+
+/* =========================================================================
+   Phones: screen 2's composition, in portrait
+   -------------------------------------------------------------------------
+   Not the stacked column the 1200px block builds -- that reflow exists so the
+   copy stays readable when the design's 1.7:1 band gets narrow, but on a
+   phone there is room to keep the collage and lay the pieces over it the way
+   the design does. Percentages are read off the portrait mock: wordmark at
+   30/22, copy at 36/40, date card low and to the left.
+
+   It also gives the pinned scene something to morph INTO down here: a stacked
+   column is not a frame you can fly to, a composition is.
+   ========================================================================= */
+@media (max-width: 640px) {
+  .about__stage {
+    /* the mock's own proportions, so the percentages below hold */
+    aspect-ratio: 351 / 701;
+    display: block;
+    padding: 0;
+    gap: 0;
+  }
+
+  /* The 1200px block flattens every plate to a full-bleed cover, which in a
+     portrait box crops a 16:9 photo down to its middle third -- that is why
+     the bridge came out as a close-up of one tower. Framed for portrait
+     instead: the span reads across the width, and the blue building comes
+     back at the right edge where the mock has it. */
+  .about__stage .about__l38 {
+    inset: auto;
+    left: -26%;
+    top: 26%;
+    width: 152%;
+    height: auto;
+    aspect-ratio: 1920 / 1080;
+  }
+
+  .about__stage .about__l39 {
+    display: block;
+    inset: auto;
+    left: 74%;
+    top: 6%;
+    width: 44%;
+    height: auto;
+    aspect-ratio: 623 / 668;
+  }
+
+  .about__title {
+    position: absolute;
+    left: 30%;
+    top: 21%;
+    width: 66%;
+    height: auto;
+    aspect-ratio: 461.676 / 370.716;
+    margin: 0;
+  }
+
+  .about__title p {
+    width: 100%;
+    font-size: 15.5vw;
+    text-align: left;
+    transform: rotate(-6deg);
+  }
+
+  /* No panel: the copy sits on the collage, as it does in the mock. The
+     backdrop is light behind it, so the ink still carries. */
+  .about__copy {
+    position: absolute;
+    left: 36%;
+    top: 40%;
+    width: 60%;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .about__copy p {
+    font-size: 3.4vw;
+    line-height: 1.5;
+  }
+
+  /* the design's cable staircase, back for the portrait composition */
+  .about__copy::before {
+    display: block;
+    float: left;
+    width: 17%;
+    aspect-ratio: 117 / 192;
+    shape-outside: polygon(0 0, 0 12.5%, 100% 100%, 0 100%);
+  }
+
+  .about__copy br {
+    display: none;
+  }
+
+  .about__date {
+    position: absolute;
+    /* inset first: as a shorthand it resets top/left, so ordering it after
+       them silently threw the card back to the top of the frame */
+    inset: auto;
+    left: 2%;
+    top: 85%;
+    width: 80%;
+    height: auto;
+    aspect-ratio: 462.622 / 102.363;
+    margin-top: 0;
+  }
+
+  .about__date > div {
+    width: 100%;
+    height: 100%;
+  }
+
+  .about__date p {
+    font-size: 7.6vw;
+  }
+}
