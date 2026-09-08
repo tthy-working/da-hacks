@@ -47,7 +47,9 @@
   width: 84%;
   z-index: 3;
   display: grid;
-  place-items: center;
+  /* centred down the band, but held to its left edge -- the title is over
+     there, so a centred card left the two unrelated */
+  place-items: center start;
 }
 
 /* One card in the band the four empty frames used to fill. Same paper and
@@ -55,8 +57,8 @@
 .sponsors__soon {
   display: grid;
   gap: 0.4em;
-  justify-items: center;
-  text-align: center;
+  justify-items: start;
+  text-align: left;
   padding: clamp(16px, 2.2vw, 32px) clamp(22px, 3.4vw, 52px);
   background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--shadow-paper-sm);
