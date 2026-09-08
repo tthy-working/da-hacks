@@ -41,18 +41,22 @@
   object-position: bottom center;
 }
 
+/* Boxes carry each sign's own aspect (903x838 and 397x1057 after trimming the
+   exports' empty canvas), so `contain` has no slack to letterbox and the
+   artwork fills exactly what is reserved for it. Both run to the foot of the
+   frame, where the design stands their poles. */
 .agenda__sign--bike {
   left: 63.7%;
   top: 61.5%;
-  width: 25.9%;
-  height: 37.5%;
+  width: 24%;
+  aspect-ratio: 903 / 838;
 }
 
 .agenda__sign--crossing {
   left: 84.4%;
   top: 32.9%;
-  width: 15.1%;
-  height: 65.1%;
+  width: 14.2%;
+  aspect-ratio: 397 / 1057;
 }
 
 /* ---- the arc of "Agenda" letters ----
