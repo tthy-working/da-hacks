@@ -25,6 +25,16 @@ export default function Agenda() {
           <img src="/assets/agenda-grass.png" alt="" />
         </Reveal>
 
+        {/* Street furniture from screen 4. Decorative, so aria-hidden -- the
+            wayfinding they carry is not information this page is giving. */}
+        <Reveal className="agenda__sign agenda__sign--bike" variant="up" delay={200} settle={-1.2} aria-hidden="true">
+          <img src="/assets/sign-bike.png" alt="" />
+        </Reveal>
+
+        <Reveal className="agenda__sign agenda__sign--crossing" variant="up" delay={260} settle={0.8} aria-hidden="true">
+          <img src="/assets/sign-crossing.png" alt="" />
+        </Reveal>
+
         <h2 className="sr-title" id="agenda-title">
           Agenda
         </h2>
