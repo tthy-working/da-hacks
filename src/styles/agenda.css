@@ -20,17 +20,16 @@
 }
 
 /* ---- street signs, bottom right of screen 4 ----
-   Boxes read off the Figma screenshot against the 1440x832 frame. z-index 2
-   puts them above the grass but UNDER the schedule cards (z-index 4), which
-   is the only way they can sit where the design puts them: screen 4 has no
-   cards, so in the file this corner is open ground. The sign faces and poles
-   read around the cards rather than fighting them.
+   Boxes read off the Figma screenshot against the 1440x832 frame. z-index 5
+   stands them in FRONT of the schedule cards (4): the crossing sign's
+   pentagon reaches up into the Sunday card's corner, and behind it the sign
+   read as clipped rather than as depth.
 
    object-fit: contain, so whatever crop the export carries keeps its shape
    inside the box rather than stretching to it. */
 .agenda__sign {
   position: absolute;
-  z-index: 2;
+  z-index: 5;
   pointer-events: none;
 }
 
