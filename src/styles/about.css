@@ -355,29 +355,42 @@
      the bridge came out as a close-up of one tower. Framed for portrait
      instead: the span reads across the width, and the blue building comes
      back at the right edge where the mock has it. */
+  /* Bridge: bottom-anchored and blown up to 210% of the frame, so the deck
+     sits on the bottom edge and the span crops off both sides rather than
+     floating in the middle at a readable size. */
   .about__stage .about__l38 {
     inset: auto;
-    left: -26%;
-    top: 26%;
-    width: 152%;
+    left: -55%;
+    bottom: 0;
+    width: 210%;
     height: auto;
     aspect-ratio: 1920 / 1080;
   }
 
+  /* Blue building down the right edge for most of the height, not a stub in
+     the corner. Cover-cropped, so the box can be tall without stretching. */
   .about__stage .about__l39 {
     display: block;
     inset: auto;
-    left: 74%;
-    top: 6%;
-    width: 44%;
-    height: auto;
-    aspect-ratio: 623 / 668;
+    left: 78%;
+    top: 8%;
+    width: 58%;
+    height: 84%;
+  }
+
+  /* Scratch paper down and right, until only its corner is in frame. */
+  .about__stage .about__l37 {
+    inset: auto;
+    left: 26%;
+    bottom: -26%;
+    width: 78%;
+    height: 42%;
   }
 
   .about__title {
     position: absolute;
-    left: 30%;
-    top: 21%;
+    left: 32%;
+    top: 24%;
     width: 66%;
     height: auto;
     aspect-ratio: 461.676 / 370.716;
@@ -386,7 +399,7 @@
 
   .about__title p {
     width: 100%;
-    font-size: 15.5vw;
+    font-size: clamp(44px, 13vw, 78px);
     text-align: left;
     transform: rotate(-6deg);
   }
@@ -403,9 +416,11 @@
     padding: 0;
   }
 
+  /* clamped, not raw vw: floors at something legible on a 320 and stops
+     growing before it swamps the collage on a 640 */
   .about__copy p {
-    font-size: 3.4vw;
-    line-height: 1.5;
+    font-size: clamp(9px, 2.5vw, 13px);
+    line-height: 1.55;
   }
 
   /* the design's cable staircase, back for the portrait composition */
@@ -440,6 +455,6 @@
   }
 
   .about__date p {
-    font-size: 7.6vw;
+    font-size: clamp(22px, 6.6vw, 38px);
   }
 }
