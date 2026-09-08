@@ -396,8 +396,8 @@
 
   .about__title {
     position: absolute;
-    left: 32%;
-    top: 31%;
+    left: 6%;
+    top: 11%;
     width: 66%;
     height: auto;
     aspect-ratio: 461.676 / 370.716;
@@ -408,16 +408,18 @@
     width: 100%;
     font-size: clamp(44px, 13vw, 78px);
     text-align: left;
-    transform: rotate(-6deg);
+    /* straight here, unlike every other screen: it is reading as a heading
+       over open sky rather than as a scrap pinned to the collage */
+    transform: none;
   }
 
   /* No panel: the copy sits on the collage, as it does in the mock. The
      backdrop is light behind it, so the ink still carries. */
   .about__copy {
     position: absolute;
-    left: 36%;
-    top: 45%;
-    width: 60%;
+    left: 6%;
+    top: 27%;
+    width: 84%;
     background: none;
     box-shadow: none;
     padding: 0;
@@ -430,18 +432,11 @@
     line-height: 1.55;
   }
 
-  /* The cable stagger. Cut long and shallow rather than short and steep: the
-     column here is only ~230px wide against the desktop's 583, so a slope
-     steep enough to parallel the cable would eat the whole measure. It has to
-     run the full height of the copy either way -- at the desktop's proportions
-     the float ended a third of the way down and the last lines snapped back
-     to the left margin. */
+  /* No cable stagger up here. It exists to rake the copy along the bridge's
+     cable, and in the open sky above the bridge there is no cable to rake
+     against -- the copy just reads as ragged. Flush left instead. */
   .about__copy::before {
-    display: block;
-    float: left;
-    width: 17%;
-    aspect-ratio: 4 / 23;
-    shape-outside: polygon(0 0, 0 8%, 100% 100%, 0 100%);
+    display: none;
   }
 
   .about__copy br {
