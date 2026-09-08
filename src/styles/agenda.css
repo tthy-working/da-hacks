@@ -245,3 +245,45 @@
     grid-template-columns: minmax(66px, 6em) 1fr;
   }
 }
+
+/* =========================================================================
+   Stacked layout: the wordmark straight
+   -------------------------------------------------------------------------
+   The arc exists to follow the crest of the grass hill it sits on. Below
+   1200px the heading leaves the hill and centres above the cards, so the
+   curve is arcing against nothing and reads as a mistake rather than as
+   hand-placed. Flat from here down: the letters keep the design's horizontal
+   spacing and lose the rotations and the vertical stagger.
+   ========================================================================= */
+@media (max-width: 1200px) {
+  .agenda__title {
+    /* a flat word needs a line's height, not the arc's 401x232 box */
+    aspect-ratio: 401.61 / 118;
+  }
+
+  /* Flow, not the arc's hand-set coordinates. Those lefts were spaced for
+     letters standing at up to 31deg, where the rotation opens a gap between
+     each pair; stood upright at the same lefts, "Agenda" overlaps by 7-12px
+     in four places. Laid out in a row each glyph takes its own advance width
+     and the word sets the way the typeface intends.
+
+     Per-letter selectors, not a bare `span`: the reveal system lands each
+     piece with `.rv.is-in { transform: ... }`, which outranks a one-class
+     selector. These match the arc rules they replace and sit after them. */
+  .agenda__title {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .agenda__title .a1,
+  .agenda__title .a2,
+  .agenda__title .a3,
+  .agenda__title .a4,
+  .agenda__title .a5,
+  .agenda__title .a6 {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+  }
+}

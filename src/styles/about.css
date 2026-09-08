@@ -193,7 +193,12 @@
   .about__stage {
     aspect-ratio: auto;
     min-height: auto;
-    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
+    /* The bottom pad is the bridge's band, reserved. The column below flows
+       to whatever height its text needs, so anything sized as a share of the
+       stage grows with the text and can never be escaped -- which is exactly
+       how the copy ended up sitting on the deck. Reserving the band in vw
+       instead ties it to the picture, not to the prose. */
+    padding: calc(var(--nav-h) + 26px) var(--gutter) min(41vw, 270px);
     display: flex;
     flex-direction: column;
     gap: 22px;
@@ -242,16 +247,23 @@
     display: none;
   }
 
-  /* The bridge has to reach every edge at any window shape. Its artwork only
-     occupies 82% x 77% of the PNG (transparent margins all round), so at 108%
-     the frame can see past the structure and the far side goes bare. Oversize
-     to 140% and the bridge covers the frame whatever the aspect: cover
-     guarantees the render is at least 140% of the frame in both axes, and
-     0.77 x 140% > 100%. Checked at 400x550 and 1200x700. */
+  /* A band across the foot of the section, not a full-frame backdrop. Filling
+     the frame is what put the deck behind the paragraphs: the column is laid
+     over the layers, so a bridge that reaches the top reaches the text too.
+
+     Height in vw, tied to the picture rather than to the stage, for the same
+     reason the pad above is: a % height of a text-driven stage grows with the
+     prose. The width still oversizes to 140% -- the artwork only occupies
+     ~82% of the PNG's width, so a 100% box shows bare ground at one end.
+
+     -9vw, not 0: the artwork stops 9% short of the bottom of its own PNG, so
+     a box sitting flush on the edge still leaves a strip of ground under the
+     deck. 9vw down puts the deck itself past the frame at every width in
+     this range. */
   .about__stage .about__l38 {
-    inset: -20% auto auto -20%;
+    inset: auto auto -9vw -20%;
     width: 140%;
-    height: 140%;
+    height: min(52vw, 340px);
   }
 
   /* The scratch paper is a foreground element rather than backdrop texture:
@@ -262,9 +274,9 @@
   .about__stage .about__l37 {
     top: auto;
     left: -8%;
-    bottom: -10%;
+    bottom: -6vw;
     width: 78%;
-    height: 56%;
+    height: min(38vw, 250px);
   }
 
   /* Both the paper and the bridge run at full strength -- they are the
@@ -369,10 +381,14 @@
     /* Past the edge, not flush to it: the bridge's artwork stops 9% above the
        bottom of its own PNG, so a box anchored at 0 still left a band of bare
        cream under the deck. */
-    bottom: -8%;
+    bottom: -12%;
     width: 210%;
-    height: auto;
-    aspect-ratio: 1920 / 1080;
+    /* Height off the STAGE, not off its own width. With an aspect-ratio the
+       box was 9:16 of 210% of the width, so on a wider or shorter phone it
+       grew taller than the frame and the tower climbed up behind the copy.
+       Cover crops the picture instead, and the band it occupies is the same
+       share of every screen. */
+    height: 62%;
   }
 
   /* Blue building down the right edge for most of the height, not a stub in
@@ -423,7 +439,7 @@
   .about__copy {
     position: absolute;
     left: 6%;
-    top: 27%;
+    top: 24%;
     /* stops clear of the blue building, whose box starts at 78% -- at 84%
        the longer lines ran into its edge */
     width: 68%;
