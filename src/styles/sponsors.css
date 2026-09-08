@@ -242,7 +242,11 @@
     left: 18%;
     top: 29%;
     width: 96%;
-    height: 74%;
+    /* Deep enough to carry the photo's own grey base past the bottom edge. At
+       74% the box ended 23px past the frame while that base is ~29px tall, so
+       a sliver of it sat just inside and read as a grey band under the
+       building. */
+    height: 84%;
     z-index: 1;
   }
 
