@@ -378,19 +378,20 @@
     height: 84%;
   }
 
-  /* Scratch paper down and right, until only its corner is in frame. */
+  /* Scratch paper low, and running past BOTH edges -- anchored at 26% it left
+     a band of bare cream down the left of the frame. */
   .about__stage .about__l37 {
     inset: auto;
-    left: 26%;
+    left: -6%;
     bottom: -26%;
-    width: 78%;
+    width: 112%;
     height: 42%;
   }
 
   .about__title {
     position: absolute;
     left: 32%;
-    top: 24%;
+    top: 31%;
     width: 66%;
     height: auto;
     aspect-ratio: 461.676 / 370.716;
@@ -409,7 +410,7 @@
   .about__copy {
     position: absolute;
     left: 36%;
-    top: 40%;
+    top: 45%;
     width: 60%;
     background: none;
     box-shadow: none;
@@ -423,13 +424,18 @@
     line-height: 1.55;
   }
 
-  /* the design's cable staircase, back for the portrait composition */
+  /* The cable stagger. Cut long and shallow rather than short and steep: the
+     column here is only ~230px wide against the desktop's 583, so a slope
+     steep enough to parallel the cable would eat the whole measure. It has to
+     run the full height of the copy either way -- at the desktop's proportions
+     the float ended a third of the way down and the last lines snapped back
+     to the left margin. */
   .about__copy::before {
     display: block;
     float: left;
     width: 17%;
-    aspect-ratio: 117 / 192;
-    shape-outside: polygon(0 0, 0 12.5%, 100% 100%, 0 100%);
+    aspect-ratio: 4 / 23;
+    shape-outside: polygon(0 0, 0 8%, 100% 100%, 0 100%);
   }
 
   .about__copy br {
