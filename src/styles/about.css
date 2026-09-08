@@ -378,7 +378,10 @@
     left: 78%;
     top: 8%;
     width: 58%;
-    height: 84%;
+    /* past the foot of the frame: at 84% the box simply stopped and left the
+       right edge bare below it. It sits behind the bridge and the paper, which
+       paint after it, so the overrun costs nothing. */
+    height: 100%;
   }
 
   /* Scratch paper low, and running past BOTH edges -- anchored at 26% it left
