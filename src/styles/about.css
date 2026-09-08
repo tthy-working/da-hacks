@@ -361,7 +361,10 @@
   .about__stage .about__l38 {
     inset: auto;
     left: -55%;
-    bottom: 0;
+    /* Past the edge, not flush to it: the bridge's artwork stops 9% above the
+       bottom of its own PNG, so a box anchored at 0 still left a band of bare
+       cream under the deck. */
+    bottom: -8%;
     width: 210%;
     height: auto;
     aspect-ratio: 1920 / 1080;
