@@ -3,8 +3,7 @@
    -------------------------------------------------------------------------
    The stage is aspect-locked to the design so every layer below can use the
    design's own percentages and the whole collage scales as one piece at any
-   width. Below 760px the stage re-proportions and the layers re-crop -- a
-   1.7:1 band is unreadable on a phone.
+   width. The iPad and iPhone frames are their own compositions: portrait.css.
    ========================================================================= */
 .hero {
   display: flex;
@@ -20,9 +19,10 @@
 }
 
 /* ---- collage photo layers, back to front ---- */
+/* Top-anchored above the frame and flush with its foot: 964px tall from -119 */
 .hero__l36 {
-  left: -2.858%;
-  top: -5.089%;
+  left: -4.236%;
+  top: -14.083%;
   width: 116.062%;
   height: 114.083%;
 }
@@ -73,13 +73,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  container-type: size;
 }
 
 .hero__l40 > div {
   flex: none;
-  /* rotated 90deg, so its pre-rotation box is stage-relative 966x560 */
-  width: 172.5%;
-  height: 58.0%;
+  /* Pre-rotation box = this layer's own box with the axes swapped, so the
+     90deg rotation lands it flush at ANY stage aspect. The percentages this
+     replaces (172.5% / 58%) only rotated into an exact fit while the stage
+     held the design's 1.704:1; at the tablet 3:2 the plate came up ~49px
+     short top and bottom and the tree stopped above the bottom edge. Same
+     trick as .about__l40. */
+  width: 100cqh;
+  height: 100cqw;
   transform: rotate(90deg);
 }
 
@@ -98,24 +104,59 @@
 .hero__l38 img { left: -8.96%; top: -5.82%; width: 116.32%; height: 114.43%; }
 .hero__l41 img { left: 0; top: -0.04%; width: 179.29%; height: 170.74%; }
 
+/* Layer 40 -- the tree, cliff and cactus plate -- is a crop too, but its
+   window is the rotated inner box rather than the layer itself, so it can't
+   use .layer--crop. The design blows the bitmap up to 122% and anchors it
+   top-left; cover-fitting it instead centres a ~100% image, which framed the
+   tree about 15% small and pushed the whole plate right, away from the left
+   edge it is supposed to bleed off. */
+.hero__l40 > div {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__l40 img {
+  position: absolute;
+  left: -0.06%;
+  top: 0;
+  width: 122.18%;
+  height: 118.5%;
+  object-fit: fill;
+}
+
 /* ---- the "De Anza Hacks" wordmark on its white paper cards ---- */
 .hero__mark {
   position: absolute;
-  left: 48.958%;
-  top: 25.917%;
+  left: 38.889%;
+  top: 29.704%;
   width: 43.246%;
-  height: 28.521%;
+  /* Aspect, not a % of the stage height. The paper cards are sized off this
+     box while the letters are sized in cqw off its WIDTH, so on any stage
+     that is not the design's 1.704:1 a percentage height stretched the cards
+     and left the lettering floating inside them -- at the tablet 3:2 the box
+     came out at 2.27:1 against the design's 2.58:1. */
+  aspect-ratio: 622.746 / 241;
   z-index: 3;
   /* cqw below is a % of THIS box's width, so the whole lockup -- letter
      positions and sizes together -- scales as a single unit. */
   container-type: inline-size;
 }
 
+/* The SVG carries its drop shadow past the shape's own box, hence the box
+   running past the lockup's right and bottom edges. */
 .hero__cards {
   position: absolute;
   inset: 0 -2.89% -5.81% 0;
   width: 102.89%;
   height: 105.81%;
+}
+
+.hero__cards picture,
+.hero__cards img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
 }
 
 .hero__mark span {
@@ -136,19 +177,31 @@
   font-family: var(--font-body);
 }
 
-.hero__mark .m-d     { left: 8.35cqw;  top: -2.73cqw; font-size: 23.28cqw; }
-.hero__mark .m-a     { left: 13.01cqw; top: 12.85cqw; font-size: 23.28cqw; }
-.hero__mark .m-e     { left: 21.36cqw; top: 5.46cqw;  font-size: 11.56cqw; }
-.hero__mark .m-nza   { left: 28.90cqw; top: 21.68cqw; font-size: 11.56cqw; }
-.hero__mark .m-hacks { left: 29.71cqw; top: 1.45cqw;  font-size: 24.89cqw; }
+/* Tops carry a shared +1.6cqw over the design's own offsets (-2.73, 12.85,
+   5.46, 21.68, 1.45). Figma's numbers are the text BOXES, and the webfont
+   seats its ink higher in the box than the file's own rendering does, so at
+   the literal values the caps sat right against the top edge of the paper.
+   The nudge is uniform, so the lockup's internal spacing is untouched. */
+.hero__mark .m-d     { left: 8.35cqw;  top: -1.13cqw; font-size: 23.28cqw; }
+.hero__mark .m-a     { left: 13.01cqw; top: 14.45cqw; font-size: 23.28cqw; }
+.hero__mark .m-e     { left: 21.36cqw; top: 7.06cqw;  font-size: 11.56cqw; }
+.hero__mark .m-nza   { left: 28.90cqw; top: 23.28cqw; font-size: 11.56cqw; }
+.hero__mark .m-hacks { left: 29.71cqw; top: 3.05cqw;  font-size: 24.89cqw; }
 
 /* ---- the 5.0 starburst ---- */
+/* Both this and .hero__ver are rotated in the design. Figma reports a rotated
+   node's x/y as its rotated top-left CORNER but its width/height as the
+   axis-aligned bounding box, so using that x as the box's `left` pushes the
+   piece right by height*sin(angle) -- 39px here, 21px on the numerals. These
+   are the layout-box positions: 1030/1440 and 1090/1440. */
 .hero__burst {
   position: absolute;
-  left: 74.265%;
+  left: 71.528%;
   top: 47.692%;
   width: 25.363%;
-  height: 38.179%;
+  /* same reason as .hero__mark: the starburst bitmap is object-fit:fill
+     inside this box, so a percentage height squashed the star */
+  aspect-ratio: 365.222 / 322.614;
   z-index: 4;
   display: flex;
   align-items: center;
@@ -162,7 +215,13 @@
   height: 86.45%;
   overflow: hidden;
   transform: rotate(8.12deg);
-  box-shadow: 14px 10px 4px rgba(0, 0, 0, 0.45);
+  /* drop-shadow, NOT box-shadow. The starburst is an alpha cut-out that fills
+     only part of this box, and Figma casts the shadow off the artwork's own
+     silhouette. box-shadow can only ever draw the border box, so it hung a
+     large dark rectangle behind the star with hard straight edges running out
+     across the grass and the halftone building. drop-shadow follows the alpha
+     channel, so the shadow hugs the points the way the design does. */
+  filter: drop-shadow(14px 10px 4px rgba(0, 0, 0, 0.45));
 }
 
 .hero__burst img {
@@ -177,10 +236,10 @@
 
 .hero__ver {
   position: absolute;
-  left: 77.144%;
+  left: 75.695%;
   top: 57.751%;
   width: 17.237%;
-  height: 23.694%;
+  aspect-ratio: 248.213 / 200.205;
   z-index: 5;
   display: flex;
   align-items: center;
@@ -201,110 +260,4 @@
 
 .hero__ver .dot {
   color: var(--ink);
-}
-
-/* =========================================================================
-   Mobile: re-proportion the stage and re-frame the collage so the wordmark
-   and the date stay legible instead of shrinking with the band.
-   ========================================================================= */
-@media (max-width: 640px) {
-  .hero__stage {
-    aspect-ratio: 4 / 5;
-    min-height: 74svh;
-  }
-
-  /* let the photo layers crop rather than squash */
-  .hero__l36 {
-    left: -30%;
-    top: -6%;
-    width: 165%;
-    height: 106%;
-  }
-
-  .hero__l39 {
-    left: 44%;
-    top: 2%;
-    width: 74%;
-    height: 58%;
-  }
-
-  .hero__l38 {
-    left: -22%;
-    bottom: -6%;
-    width: 116%;
-    height: 46%;
-  }
-
-  .hero__l41 {
-    right: -12%;
-    bottom: -2%;
-    width: 84%;
-    height: 34%;
-  }
-
-  .hero__l37 {
-    left: -34%;
-    right: 6%;
-    bottom: -26%;
-    height: 52%;
-  }
-
-  .hero__l40 {
-    left: -18%;
-    bottom: -3%;
-    width: 74%;
-    height: 88%;
-  }
-
-  /* Wordmark moved to the upper-centre where there's clear sky. Height comes
-     from the paper-cards artwork's own aspect ratio -- pinning it to a % of
-     the stage squashed the cards into a white blob once the stage went tall. */
-  .hero__mark {
-    left: 8%;
-    top: 15%;
-    width: 78%;
-    height: auto;
-    aspect-ratio: 622.746 / 241;
-  }
-
-  .hero__burst {
-    left: 52%;
-    top: 60%;
-    width: 44%;
-    height: 26%;
-  }
-
-  .hero__ver {
-    left: 57%;
-    top: 63.5%;
-    width: 30%;
-    height: 18%;
-  }
-}
-
-/* small phones: step the lockup down rather than letting it fill the width */
-@media (max-width: 400px) {
-  .hero__stage {
-    min-height: 70svh;
-  }
-
-  .hero__mark {
-    left: 6%;
-    top: 14%;
-    width: 82%;
-  }
-
-  .hero__burst {
-    left: 48%;
-    top: 58%;
-    width: 48%;
-    height: 28%;
-  }
-
-  .hero__ver {
-    left: 54%;
-    top: 61.5%;
-    width: 33%;
-    height: 20%;
-  }
 }

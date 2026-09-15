@@ -12,7 +12,7 @@
   --font-display: 'Irish Grover', 'Comic Sans MS', cursive;
   --font-body: 'Space Mono', ui-monospace, monospace;
 
-  --nav-h: clamp(60px, 5.6vw, 81px);
+  --nav-h: clamp(52px, 5vw, 72px);
   --gutter: clamp(20px, 5vw, 98px);
 
   /* collage drop shadow used on the paper cut-outs in the design */
@@ -72,14 +72,13 @@ button {
   isolation: isolate;
 }
 
-/* Breakpoints
+/* Frames
    ----------------------------------------------------------------
-   > 1200px   collage stages, absolute positioning, design geometry
-   <= 1200px  About/Sponsors/Agenda reflow to stacked flow layout
-              (below this the design's 16px copy hits its clamp floor and
-              the absolutely placed boxes start to collide)
-   <= 640px   hero switches to its tall phone framing
-   <= 400px   type and spacing step down again for small phones
+   Figma draws each screen for three devices, and the page lays out whichever
+   one fits the screen's shape (src/breakpoints.js):
+     phone   <= 640px wide          iPhone frame, 393x852    portrait.css
+     tablet  > 640px, portrait      iPad frame, 768x1024     portrait.css
+     laptop  > 640px, landscape     laptop frame, 1440 wide  each section's file
    Nav collapses to a burger at <= 1040px. */
 
 /* Full-bleed collage layer. The design stacks torn-paper photo layers at
@@ -98,7 +97,11 @@ button {
   max-width: none;
 }
 
-/* ---- display headings: the big Irish Grover words with hard offset shadow ---- */
+/* ---- display headings: the big Irish Grover words with hard offset shadow ----
+   Offsets are in em, not px. They were tuned against the design's ~109px
+   type; held in px they keep that size as the wordmark scales down, so on a
+   phone a 10px offset is 22% of a 45px word rather than 9% and the shadow
+   crowds the letters into mud. */
 .wordmark {
   font-family: var(--font-display);
   font-weight: 400;
@@ -108,17 +111,17 @@ button {
 
 .wordmark--about {
   color: var(--paper);
-  text-shadow: -10px 4px 0 var(--orange);
+  text-shadow: -0.092em 0.037em 0 var(--orange);
 }
 
 .wordmark--sponsors {
   color: var(--coral);
-  text-shadow: -10px 4px 0 var(--paper);
+  text-shadow: -0.092em 0.037em 0 var(--paper);
 }
 
 .wordmark--agenda {
   color: var(--slate);
-  text-shadow: -7px 5px 0 var(--paper);
+  text-shadow: -0.064em 0.046em 0 var(--paper);
 }
 
 /* Screen readers / skip link */

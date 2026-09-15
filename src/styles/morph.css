@@ -1,0 +1,173 @@
+/* =========================================================================
+   Screen 1 -> 2 -> 3, the way Figma's Smart Animate does it
+   -------------------------------------------------------------------------
+   All three frames carry the same plates under the same names, so none of
+   this is a cross-fade between pictures: ONE set of plates travels from its
+   box on screen 1, to its box on screen 2, to its box on screen 3. Screen 2's
+   and screen 3's own copies stay hidden for the whole scene -- two sets
+   dissolving into each other is what ghosts, because they only ever occupy
+   the same boxes at the exact end of a leg.
+
+   Leg one dives: plate 40 goes 560x966 -> 3809x6773, a 7x push into the
+   tree, while 39 nearly doubles. Leg two turns: screens 2 and 3 share only
+   36 and 39 and both travel LEFT, and the world sliding left is the camera
+   panning right.
+
+   Every figure is (next screen - this screen) read straight off the frames,
+   in percentages of the stage. Screen 3's frame is 1440x832 against the
+   others' 845, so its vertical figures are restated against the stage the
+   pin actually uses (x0.98462) before the deltas are taken.
+   ========================================================================= */
+.scene {
+  position: relative;
+}
+
+.scene__spacer {
+  display: none;
+}
+
+/* Where #about and #sponsors point while the scene is live -- the end of each
+   leg, measured from the scene, which unlike the pinned sections does not
+   move as you scroll. Scene.jsx takes the ids off the sections in that case
+   so there is only ever one of each. */
+.scene__anchor {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.scene.is-live {
+  /* How much scroll each leg is given. Shorter reads snappier -- the camera
+     covers the same ground in less scrolling -- at the cost of moving further
+     per scroll step, which is what would start to look steppy on a mouse
+     wheel rather than a trackpad. 115svh is about as quick as this goes
+     before the 7x dive begins to jump. */
+  --scene-distance: 115svh;
+}
+
+.scene.is-live .scene__pin {
+  position: sticky;
+  top: 0;
+}
+
+.scene.is-live .scene__spacer {
+  display: block;
+  height: var(--scene-distance);
+}
+
+/* ---- the frames, stacked ---- */
+
+/* Each stage carries an opaque cream ground, which is right when it stands on
+   its own. Stacked, that ground blanks whatever is moving underneath it. */
+.scene.is-live .about__stage,
+.scene.is-live .sponsors__stage {
+  background: transparent;
+}
+
+/* Screens 2 and 3 contribute their text, not their scenery: the plates below
+   are already standing in for theirs, in the same boxes. */
+.scene.is-live .about__stage .layer,
+.scene.is-live .sponsors__stage .layer {
+  display: none;
+}
+
+.scene.is-live .about {
+  position: absolute;
+  inset: 0 0 auto 0;
+  /* in across leg one, out across leg two. Chained opacity filters multiply,
+     so this is one expression rather than two rules fighting -- and filter
+     rather than opacity so it multiplies with each piece's own reveal
+     instead of overruling it. */
+  filter: opacity(clamp(0, calc((var(--p, 0) - 0.5) / 0.4), 1))
+    opacity(clamp(0, calc(1 - (var(--q, 0) - 0.12) / 0.33), 1));
+  pointer-events: none;
+}
+
+.scene.is-live .sponsors {
+  position: absolute;
+  inset: 0 0 auto 0;
+  filter: opacity(clamp(0, calc((var(--q, 0) - 0.5) / 0.4), 1));
+  pointer-events: none;
+}
+
+.scene.is-live.is-past .about,
+.scene.is-live.is-past-two .sponsors {
+  pointer-events: auto;
+}
+
+.scene.is-live.is-past .hero,
+.scene.is-live.is-past-two .about {
+  pointer-events: none;
+}
+
+/* screen 1's lockups have no counterpart on either later frame, so they go */
+.scene.is-live .hero__mark,
+.scene.is-live .hero__burst,
+.scene.is-live .hero__ver {
+  filter: opacity(clamp(0, calc(1 - (var(--p, 0) - 0.1) / 0.35), 1));
+}
+
+/* ---- the plates: one set, both legs ---- */
+.scene.is-live .hero__stage {
+  /* so the offsets below can be written in stage percentages: 1cqw is 1% of
+     the stage's width, 1cqh 1% of its height */
+  container-type: size;
+}
+
+.scene.is-live .hero__stage .layer {
+  transform-origin: 0 0;
+  /* translate/scale as their own properties, NOT transform: the reveal owns
+     transform on these elements, and the individual properties compose with
+     it rather than fighting it -- and they are not caught by its transition,
+     so scrolling stays instant.
+
+     The two legs compose: positions add (they are absolute offsets), scales
+     multiply. At p=1,q=1 plate 36 lands on 2.2511x, and 261.25/116.062 is
+     2.2510 -- the screen 3 box, arrived at through the screen 2 one. */
+  translate: calc((var(--mx, 0) * var(--p, 0) + var(--nx, 0) * var(--q, 0)) * 1cqw)
+    calc((var(--my, 0) * var(--p, 0) + var(--ny, 0) * var(--q, 0)) * 1cqh);
+  scale: calc(
+      (1 + (var(--msx, 1) - 1) * var(--p, 0)) * (1 + (var(--nsx, 1) - 1) * var(--q, 0))
+    )
+    calc((1 + (var(--msy, 1) - 1) * var(--p, 0)) * (1 + (var(--nsy, 1) - 1) * var(--q, 0)));
+}
+
+/* leg one, screen 1 -> 2      dx        dy         scale x   scale y   */
+.scene.is-live .hero__l36 { --mx:   -0.684; --my:   -9.357; --msx: 1.2750; --msy: 1.1231; }
+.scene.is-live .hero__l39 { --mx:   20.924; --my:  -35.940; --msx: 1.8642; --msy: 1.6826; }
+.scene.is-live .hero__l38 { --mx:   -9.594; --my:  -19.008; --msx: 1.6555; --msy: 1.4952; }
+.scene.is-live .hero__l37 { --mx:  -12.567; --my:   17.042; --msx: 1.0000; --msy: 1.0000; }
+.scene.is-live .hero__l40 { --mx: -137.220; --my: -277.275; --msx: 6.8018; --msy: 7.0113; }
+
+/* leg two, screen 2 -> 3. Only 36 and 39 exist on screen 3. */
+.scene.is-live .hero__l36 { --nx: -128.600; --ny: -48.279; --nsx: 1.7656; --nsy: 1.7374; }
+.scene.is-live .hero__l39 { --nx:  -55.920; --ny:  29.958; --nsx: 0.8607; --nsy: 0.9537; }
+
+/* 41 is the plate screen 2 does not have, so it leaves on leg one */
+.scene.is-live .hero__l41 {
+  filter: opacity(clamp(0, calc(1 - var(--p, 0) / 0.6), 1));
+}
+
+/* 38 and 37 are the ones screen 3 does not have. Figma would simply fade
+   them, but a camera move with half the shot nailed down reads as broken, so
+   they travel with 36 and are gone before the mismatch in their scale shows. */
+.scene.is-live .hero__l38,
+.scene.is-live .hero__l37 {
+  --nx: -128.600;
+  --ny: -48.279;
+  filter: opacity(clamp(0, calc(1 - var(--q, 0) / 0.45), 1));
+}
+
+/* The tree is the whole point of leg one and then it is in the way. It has to
+   be there for the dive -- 560x966 to 3809x6773 is the shot -- but by the end
+   of that it is a 7x blow-up of a 1920x1080 bitmap filling the frame, and it
+   sits over screen 2 as a wall of out-of-focus green. Screen 2's own copy of
+   the plate frames it as foliage in the top corners; this one cannot, because
+   it carries screen 1's bitmap crop with it. So it leaves as the dive lands,
+   and is long gone before the turn starts. */
+.scene.is-live .hero__l40 {
+  --nx: -128.600;
+  --ny: -48.279;
+  filter: opacity(clamp(0, calc(1 - (var(--p, 0) - 0.8) / 0.2), 1));
+}

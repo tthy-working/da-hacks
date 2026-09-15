@@ -92,18 +92,46 @@
    Column is ~37% (Figma's widest line measures ~530px of 1440). */
 .about__copy {
   position: absolute;
-  left: 44.6%;
-  top: 30.4%;
-  width: 37%;
+  left: 45%;
+  top: 31.243%;
+  /* wider than the longest line (the design's is 548px) so a hard-broken line
+     can never wrap into an orphan; the copy is left-aligned, so the slack
+     beyond the rag is invisible */
+  width: 41.667%;
   z-index: 3;
+}
+
+/* The copy's left edge runs parallel to the bridge's main cable. In the design
+   every line starts about 20px further right than the one above it -- 648,
+   665, 680 for the first paragraph, 712, 730, 747 for the second -- so the
+   block leans with the cable instead of sitting in a straight column.
+
+   Carried as a float with a sloped shape rather than six hand-placed lines, so
+   the copy still wraps, reflows and can be translated. The first 12.5% of the
+   shape is vertical on purpose: a line box takes its indent from the shape's
+   widest point ANYWHERE in its band, i.e. from its bottom edge, so without a
+   flat start every line would sit one step too far right. The float runs
+   deeper than the six lines it needs to cover so a seventh line can't drop off
+   the bottom of the slope and snap back to the left. */
+@supports (shape-outside: polygon(0 0, 0 0, 0 0)) {
+  .about__copy::before {
+    content: '';
+    float: left;
+    width: 19.5%;
+    aspect-ratio: 117 / 192;
+    shape-outside: polygon(0 0, 0 12.5%, 100% 100%, 0 100%);
+    shape-margin: 0;
+  }
 }
 
 .about__copy p {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(11px, 1.11vw, 16px);
-  letter-spacing: -0.05em;
-  line-height: 1.5;
+  /* 15px/24px at the design's 1440 -- the comp's 61-character first line
+     measures 548px, which is Space Mono at 15px. The 24px advance is what the
+     slope above is cut for. */
+  font-size: clamp(8px, 1.0417vw, 15px);
+  line-height: 1.6;
 }
 
 .about__copy strong {
@@ -111,13 +139,18 @@
   font-weight: 400;
   font-size: 1.25em;
   letter-spacing: 0;
+  /* 1.25em x 1.28 == the paragraph's own 24px line box. Left to inherit the
+     1.6 factor it would compute against its own larger size and make the
+     first line 30px tall, which drops every line one notch further down the
+     slope above -- the whole block then sits a few px right of the design. */
+  line-height: 1.28;
 }
 
-/* Figma leaves a ~33px gap between the paragraphs and starts the second one
-   ~65px further right than the first. */
+/* Figma leaves 46px between the two paragraphs' first lines -- one 24px line
+   advance plus 22px of gap. The step to the right that used to be faked here
+   now comes from the slope above, which keeps going across the break. */
 .about__copy p + p {
-  margin-top: 2em;
-  padding-left: 12%;
+  margin-top: 1.4667em;
 }
 
 /* ---- olive date card ---- */
@@ -153,74 +186,4 @@
   color: #fff;
   white-space: nowrap;
   transform: rotate(0.39deg);
-}
-
-/* ---- mobile: drop the collage to a backdrop and let the text lead ---- */
-@media (max-width: 1200px) {
-  .about__stage {
-    aspect-ratio: auto;
-    min-height: auto;
-    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-
-  .about__stage .layer {
-    /* keep the paper texture, lose the precise collage geometry */
-    inset: 0 auto auto 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.55;
-  }
-
-  .about__l39,
-  .about__l40 {
-    display: none;
-  }
-
-  .about__title,
-  .about__copy,
-  .about__date {
-    position: static;
-    width: 100%;
-    height: auto;
-    inset: auto;
-  }
-
-  .about__title {
-    display: block;
-  }
-
-  .about__title p {
-    transform: rotate(-6deg);
-    font-size: clamp(52px, 17vw, 96px);
-    text-align: center;
-  }
-
-  .about__copy {
-    background: rgba(255, 255, 255, 0.82);
-    padding: 16px 18px;
-    box-shadow: var(--shadow-paper-sm);
-  }
-
-  .about__copy p {
-    font-size: 15px;
-  }
-
-  /* the indent is a desktop composition detail; drop it on narrow screens */
-  .about__copy p + p {
-    margin-top: 1em;
-    padding-left: 0;
-  }
-
-  .about__date > div {
-    width: 100%;
-    height: auto;
-    padding: 14px 10px;
-  }
-
-  .about__date p {
-    font-size: clamp(26px, 7vw, 44px);
-  }
 }

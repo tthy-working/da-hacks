@@ -1,5 +1,5 @@
 import Reveal from './Reveal'
-import { AGENDA } from '../data/agenda'
+import { AGENDA, VENUE } from '../data/agenda'
 
 /* Rotations come from the Figma letter nodes -- the word arcs down to the
    right, so each letter keeps its own angle. */
@@ -23,6 +23,16 @@ export default function Agenda() {
           aria-hidden="true"
         >
           <img src="/assets/agenda-grass.png" alt="" />
+        </Reveal>
+
+        {/* Street furniture from screen 4. Decorative, so aria-hidden -- the
+            wayfinding they carry is not information this page is giving. */}
+        <Reveal className="agenda__sign agenda__sign--bike" variant="up" delay={200} settle={-1.2} aria-hidden="true">
+          <img src="/assets/sign-bike.png" alt="" />
+        </Reveal>
+
+        <Reveal className="agenda__sign agenda__sign--crossing" variant="up" delay={260} settle={0.8} aria-hidden="true">
+          <img src="/assets/sign-crossing.png" alt="" />
         </Reveal>
 
         <h2 className="sr-title" id="agenda-title">
@@ -71,8 +81,7 @@ export default function Agenda() {
         </div>
 
         <Reveal as="p" className="agenda__note" variant="up" delay={600} settle={-1.4}>
-          Times are a draft and will shift a little before the weekend. Follow{' '}
-          <strong>@deanzahacks</strong> for the final call sheet.
+          Location: <strong>{VENUE}</strong>
         </Reveal>
       </div>
     </section>

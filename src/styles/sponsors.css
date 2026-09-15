@@ -36,9 +36,10 @@
   font-size: clamp(44px, 7.57vw, 109px);
 }
 
-/* ---- placeholder logo wall ----
-   The design reserves this band but ships no sponsor logos yet, so these are
-   empty slots sized to the band. Swap each for a real <img> as they land. */
+/* ---- logo band ----
+   The design reserves this band but ships no sponsor logos yet. Rather than
+   stand four empty frames in it, it carries one card that says so. When the
+   logos land, this goes back to a grid of them. */
 .sponsors__wall {
   position: absolute;
   left: 8%;
@@ -46,40 +47,62 @@
   width: 84%;
   z-index: 3;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(10px, 1.6vw, 24px);
+  /* centred down the band, but held to its left edge -- the title is over
+     there, so a centred card left the two unrelated */
+  place-items: center start;
 }
 
-.sponsors__slot {
+/* One card in the band the four empty frames used to fill. Same paper and
+   shadow as the rest of the collage, just the width of what it says. */
+.sponsors__soon {
   display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 9;
-  background: rgba(255, 255, 255, 0.88);
+  gap: 0.4em;
+  justify-items: start;
+  text-align: left;
+  padding: clamp(16px, 2.2vw, 32px) clamp(22px, 3.4vw, 52px);
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--shadow-paper-sm);
-  font-size: clamp(9px, 0.9vw, 13px);
-  letter-spacing: 0.04em;
-  color: #8b8b8b;
-  text-align: center;
-  padding: 6px;
 }
 
-.sponsors__slot:nth-child(odd)  { transform: rotate(-1.1deg); }
-.sponsors__slot:nth-child(even) { transform: rotate(0.9deg); }
+.sponsors__soon strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(22px, min(2.5vw, 4.33svh), 36px);
+  line-height: 1.1;
+  color: var(--coral);
+}
 
-/* ---- footer CTA strip ---- */
+.sponsors__soon span {
+  font-family: var(--font-body);
+  font-size: clamp(11px, min(1.11vw, 1.92svh), 16px);
+  color: #6d6257;
+}
+
+/* ---- footer CTA strip ----
+   Sits 8% higher than the design places it. With the logo band down to a
+   single card there is open ground between the two, and the ask reads as
+   part of the section rather than something caught on the bottom edge. */
 .sponsors__divider {
   position: absolute;
   left: 38.958%;
-  top: 83.589%;
+  top: 75.6%;
   width: 58.889%;
   height: 8.686%;
   z-index: 2;
 }
 
+.sponsors__divider picture,
+.sponsors__divider img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
 .sponsors__ask {
   position: absolute;
   left: 41.597%;
-  top: 86.113%;
+  top: 78.1%;
   width: 25.6%;
   z-index: 4;
   margin: 0;
@@ -92,7 +115,7 @@
 .sponsors__cta {
   position: absolute;
   left: 67.767%;
-  top: 83.293%;
+  top: 75.3%;
   width: 16.229%;
   height: 9.114%;
   z-index: 4;
@@ -126,90 +149,4 @@
   color: #fff;
   white-space: nowrap;
   transform: rotate(2.73deg);
-}
-
-/* ---- mobile ---- */
-@media (max-width: 1200px) {
-  .sponsors__stage {
-    aspect-ratio: auto;
-    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .sponsors__l36 {
-    left: -60%;
-    top: -10%;
-    width: 220%;
-    height: 120%;
-  }
-
-  .sponsors__panel {
-    display: none;
-  }
-
-  .sponsors__title,
-  .sponsors__wall,
-  .sponsors__ask,
-  .sponsors__cta {
-    position: static;
-    width: 100%;
-    height: auto;
-    inset: auto;
-  }
-
-  .sponsors__divider {
-    display: none;
-  }
-
-  .sponsors__title {
-    font-size: clamp(40px, 13vw, 72px);
-    text-align: center;
-  }
-
-  /* keep 4-up on tablets; only drop to 2-up on phones */
-  .sponsors__wall {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .sponsors__ask {
-    text-align: center;
-    font-size: 16px;
-  }
-
-  .sponsors__cta {
-    display: flex;
-    justify-content: center;
-  }
-
-  .sponsors__cta a {
-    width: auto;
-    height: auto;
-    padding: 13px 30px;
-  }
-
-  .sponsors__cta span {
-    font-size: 26px;
-  }
-}
-
-@media (max-width: 640px) {
-  .sponsors__wall {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 400px) {
-  .sponsors__title {
-    font-size: clamp(32px, 11.5vw, 52px);
-  }
-
-  .sponsors__ask {
-    font-size: 14px;
-  }
-
-  .sponsors__cta span {
-    font-size: 22px;
-  }
 }

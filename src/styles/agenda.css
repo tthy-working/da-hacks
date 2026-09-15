@@ -19,6 +19,47 @@
   height: 98.918%;
 }
 
+/* ---- street signs, bottom right of screen 4 ----
+   Boxes read off the Figma screenshot against the 1440x832 frame. z-index 5
+   stands them in FRONT of the schedule cards (4): the crossing sign's
+   pentagon reaches up into the Sunday card's corner, and behind it the sign
+   read as clipped rather than as depth.
+
+   object-fit: contain, so whatever crop the export carries keeps its shape
+   inside the box rather than stretching to it. */
+.agenda__sign {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.agenda__sign img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+/* Boxes carry each sign's own aspect (903x838 and 397x1057 after trimming the
+   exports' empty canvas), so `contain` has no slack to letterbox. Positions
+   are the trimmed artwork's own box inside the Figma crops -- the frame's
+   1920x1080 sources hold the bike sign at 531,242 and the crossing sign at
+   695,23 -- so both stand where screen 4 stands them, poles running off the
+   foot of the frame. */
+.agenda__sign--bike {
+  left: 63.742%;
+  top: 60.928%;
+  width: 25.378%;
+  aspect-ratio: 903 / 838;
+}
+
+.agenda__sign--crossing {
+  left: 84.165%;
+  top: 32.652%;
+  width: 15.272%;
+  aspect-ratio: 397 / 1057;
+}
+
 /* ---- the arc of "Agenda" letters ----
    In Figma this is twelve text nodes: a white set with a #759da9 set laid 7px
    down-right of it. Rebuilt as six letters with a hard offset text-shadow. */
@@ -38,7 +79,7 @@
   font-size: 27.14cqw;
   line-height: 1;
   color: var(--slate);
-  text-shadow: -7px -3px 0 #fff;
+  text-shadow: -0.064em -0.028em 0 #fff;
 }
 
 .agenda__title .a1 { left: 0;        top: 0.48cqw;  transform: rotate(-3.11deg); }
@@ -52,7 +93,7 @@
 .agenda__days {
   position: absolute;
   left: 34%;
-  top: 13%;
+  top: 17%;
   width: 60%;
   z-index: 4;
   display: grid;
@@ -117,67 +158,21 @@
   font-weight: 700;
 }
 
+/* Sits high enough to be read on the way past rather than after the schedule,
+   and only as wide as the one line it now carries. */
 .agenda__note {
   position: absolute;
   left: 3%;
-  bottom: 5%;
-  width: 27%;
+  bottom: 26%;
+  width: max-content;
+  max-width: 34%;
   z-index: 4;
   margin: 0;
-  font-size: clamp(9.5px, 1.04vw, 14px);
-  line-height: 1.5;
+  font-size: clamp(13px, 1.53vw, 21px);
+  line-height: 1.4;
   color: #21351f;
   background: rgba(255, 255, 255, 0.8);
   padding: 10px 13px;
   box-shadow: var(--shadow-paper-sm);
   transform: rotate(-1.4deg);
-}
-
-/* ---- mobile ---- */
-@media (max-width: 900px) {
-  .agenda__days {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1200px) {
-  .agenda__stage {
-    aspect-ratio: auto;
-    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-
-  .agenda__grass {
-    left: -20%;
-    top: auto;
-    bottom: -4%;
-    width: 140%;
-    height: 46%;
-  }
-
-  /* The arc's own bounding box in the design is 401.61 x 232.5. Matching that
-     aspect lets the cqw-sized letters scale with the box instead of
-     overflowing a fixed height and colliding with the cards. */
-  .agenda__title {
-    position: static;
-    width: min(100%, 460px);
-    height: auto;
-    aspect-ratio: 401.61 / 232.5;
-    margin: 0 auto;
-    inset: auto;
-  }
-
-  .agenda__days,
-  .agenda__note {
-    position: static;
-    width: 100%;
-    inset: auto;
-  }
-
-  .agenda__row {
-    font-size: 13.5px;
-    grid-template-columns: minmax(66px, 6em) 1fr;
-  }
 }

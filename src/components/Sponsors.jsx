@@ -1,13 +1,14 @@
 import Reveal from './Reveal'
 import { CONTACT_EMAIL } from '../config'
+import { PHONE, TABLET } from '../breakpoints'
 
-/* The design reserves a logo band but ships no logos yet. Replace each entry
-   with { name, logo, href } and render an <img> once they're confirmed. */
-const SLOTS = ['Sponsor logo', 'Sponsor logo', 'Sponsor logo', 'Sponsor logo']
+/* The design reserves a logo band but ships no logos yet, so the band says so
+   rather than standing four empty frames in it. When they are confirmed, drop
+   this card and render the logos here instead. */
 
-export default function Sponsors() {
+export default function Sponsors({ anchorId = 'sponsors' }) {
   return (
-    <section className="section sponsors" id="sponsors" aria-labelledby="sponsors-title">
+    <section className="section sponsors" id={anchorId} aria-labelledby="sponsors-title">
       <div className="sponsors__stage">
         <Reveal
           className="layer sponsors__l36"
@@ -32,28 +33,21 @@ export default function Sponsors() {
         </Reveal>
 
         <div className="sponsors__wall">
-          {SLOTS.map((label, i) => (
-            <Reveal
-              key={i}
-              className="sponsors__slot"
-              variant="pop snap"
-              delay={300 + i * 70}
-              settle={i % 2 === 0 ? -1.1 : 0.9}
-            >
-              {label}
-            </Reveal>
-          ))}
+          <Reveal className="sponsors__soon" variant="pop snap" delay={300} settle={-1.1}>
+            <strong>Sponsors coming soon</strong>
+            <span>This year&rsquo;s partners are being confirmed.</span>
+          </Reveal>
         </div>
 
-        <Reveal
-          as="img"
-          className="sponsors__divider"
-          src="/assets/sponsors-divider.svg"
-          alt=""
-          variant="left"
-          delay={600}
-          aria-hidden="true"
-        />
+        {/* the brush is redrawn per frame, not stretched: the strokes keep
+            their weight while the stroke gets shorter */}
+        <Reveal className="sponsors__divider" variant="left" delay={600} aria-hidden="true">
+          <picture>
+            <source media={PHONE} srcSet="/assets/sponsors-divider-phone.svg" />
+            <source media={TABLET} srcSet="/assets/sponsors-divider-tablet.svg" />
+            <img src="/assets/sponsors-divider.svg" alt="" />
+          </picture>
+        </Reveal>
 
         <Reveal as="p" className="sponsors__ask" variant="up" delay={660}>
           Interested in sponsoring?

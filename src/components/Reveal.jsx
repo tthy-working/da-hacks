@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * One IntersectionObserver for the whole page instead of one per element --
@@ -7,20 +7,9 @@ import { useEffect, useRef } from 'react'
  */
 let sharedObserver = null
 
-function land(el) {
-  el.classList.add('is-in')
-
-  // The idle sway animation writes to `transform`, which would fight the
-  // reveal. Only arm it once the piece has actually finished landing.
-  if (el.classList.contains('sway')) {
-    const arm = () => el.classList.add('sway-ready')
-    el.addEventListener('transitionend', arm, { once: true })
-    el.addEventListener('animationend', arm, { once: true })
-    // Fallback: if the piece was already on screen at mount the transition
-    // may never fire, so don't leave the sway permanently disabled.
-    setTimeout(arm, 1600)
-  }
-}
+/* The observer only knows about DOM nodes, so each observed element keeps a
+   pointer back to the hook instance that owns it. */
+const onLand = new WeakMap()
 
 function getObserver() {
   if (sharedObserver) return sharedObserver
@@ -29,8 +18,8 @@ function getObserver() {
     (entries, obs) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue
-        land(entry.target)
         obs.unobserve(entry.target)
+        onLand.get(entry.target)?.()
       }
     },
     {
@@ -50,27 +39,58 @@ function getObserver() {
 
 /**
  * Attach to any element to have it reveal on scroll.
- * Returns a ref -- use when you need the raw element (e.g. an <img>).
+ *
+ * Returns [ref, landed, swayReady]. The two flags are React state, NOT classes
+ * poked onto the node: anything whose className prop can change (the FAQ items
+ * gain `is-open`) would otherwise have the reveal class overwritten by the next
+ * render and vanish back to opacity 0.
  */
-export function useReveal() {
+export function useReveal(sway = false) {
   const ref = useRef(null)
+  const [landed, setLanded] = useState(false)
+  const [swayReady, setSwayReady] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
+    let done = false
+    let timer
+
+    const land = () => {
+      if (done) return
+      setLanded(true)
+
+      // The idle sway animation writes to `transform`, which would fight the
+      // reveal. Only arm it once the piece has actually finished landing.
+      if (!sway) return
+      const arm = () => !done && setSwayReady(true)
+      el.addEventListener('transitionend', arm, { once: true })
+      el.addEventListener('animationend', arm, { once: true })
+      // Fallback: if the piece was already on screen at mount the transition
+      // may never fire, so don't leave the sway permanently disabled.
+      timer = setTimeout(arm, 1600)
+    }
+
     // No IntersectionObserver (or a very old browser): show everything.
     if (typeof IntersectionObserver === 'undefined') {
-      land(el)
+      land()
       return
     }
 
+    onLand.set(el, land)
     const obs = getObserver()
     obs.observe(el)
-    return () => obs.unobserve(el)
-  }, [])
 
-  return ref
+    return () => {
+      done = true
+      clearTimeout(timer)
+      onLand.delete(el)
+      obs.unobserve(el)
+    }
+  }, [sway])
+
+  return [ref, landed, swayReady]
 }
 
 const VARIANTS = new Set(['drop', 'left', 'right', 'pop', 'sheet', 'flip', 'snap'])
@@ -94,7 +114,7 @@ export function Reveal({
   children,
   ...rest
 }) {
-  const ref = useReveal()
+  const [ref, landed, swayReady] = useReveal(Boolean(sway))
 
   const variantClasses = variant
     .split(/\s+/)
@@ -107,7 +127,16 @@ export function Reveal({
   return (
     <Tag
       ref={ref}
-      className={['rv', variantClasses, swayClass, className].filter(Boolean).join(' ')}
+      className={[
+        'rv',
+        variantClasses,
+        swayClass,
+        landed && 'is-in',
+        swayReady && 'sway-ready',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       style={{
         '--rv-delay': `${delay}ms`,
         '--rv-settle': `${settle}deg`,
