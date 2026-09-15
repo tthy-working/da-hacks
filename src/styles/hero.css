@@ -3,8 +3,7 @@
    -------------------------------------------------------------------------
    The stage is aspect-locked to the design so every layer below can use the
    design's own percentages and the whole collage scales as one piece at any
-   width. Below 760px the stage re-proportions and the layers re-crop -- a
-   1.7:1 band is unreadable on a phone.
+   width. The iPad and iPhone frames are their own compositions: portrait.css.
    ========================================================================= */
 .hero {
   display: flex;
@@ -20,9 +19,10 @@
 }
 
 /* ---- collage photo layers, back to front ---- */
+/* Top-anchored above the frame and flush with its foot: 964px tall from -119 */
 .hero__l36 {
-  left: -2.858%;
-  top: -5.089%;
+  left: -4.236%;
+  top: -14.083%;
   width: 116.062%;
   height: 114.083%;
 }
@@ -127,8 +127,8 @@
 /* ---- the "De Anza Hacks" wordmark on its white paper cards ---- */
 .hero__mark {
   position: absolute;
-  left: 48.958%;
-  top: 25.917%;
+  left: 38.889%;
+  top: 29.704%;
   width: 43.246%;
   /* Aspect, not a % of the stage height. The paper cards are sized off this
      box while the letters are sized in cqw off its WIDTH, so on any stage
@@ -142,11 +142,21 @@
   container-type: inline-size;
 }
 
+/* The SVG carries its drop shadow past the shape's own box, hence the box
+   running past the lockup's right and bottom edges. */
 .hero__cards {
   position: absolute;
   inset: 0 -2.89% -5.81% 0;
   width: 102.89%;
   height: 105.81%;
+}
+
+.hero__cards picture,
+.hero__cards img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
 }
 
 .hero__mark span {
@@ -250,137 +260,4 @@
 
 .hero__ver .dot {
   color: var(--ink);
-}
-
-/* Tablet / narrow window. Every other section has already reflowed to a
-   stacked column by 1200px, but the hero was still holding the design's
-   1.704:1 band -- at 820px that is a 481px-tall letterbox, which is what made
-   this range feel out of step with the rest of the page. A 3:2 stage gives it
-   back some height while keeping the design's collage geometry; the layers
-   below stay exactly where the design puts them. */
-@media (max-width: 1200px) and (min-width: 641px) {
-  .hero__stage {
-    aspect-ratio: 3 / 2;
-  }
-}
-
-/* =========================================================================
-   Mobile: re-proportion the stage and re-frame the collage so the wordmark
-   and the date stay legible instead of shrinking with the band.
-   ========================================================================= */
-@media (max-width: 640px) {
-  .hero__stage {
-    /* One screenful, whatever the device. svh not vh or dvh: the small
-       viewport height is the one that does not change when the browser's own
-       chrome slides away, so the composition never jumps mid-scroll. The
-       collage crops to fill it rather than stretching -- plates are anchored
-       and oversized, so a taller phone shows more of them and a shorter one
-       shows less. */
-    height: 100svh;
-  }
-
-  /* let the photo layers crop rather than squash */
-  .hero__l36 {
-    left: -30%;
-    top: -6%;
-    width: 165%;
-    height: 106%;
-  }
-
-  /* The building must have NO bottom edge on screen. Tucking the cut under the
-     grass is not enough: how much of it the blades actually cover depends on
-     the stage's proportions, so at 610px the edge surfaced again just above
-     them. The box now runs past the bottom of the stage, where overflow:hidden
-     clips it -- true at every viewport, with nothing depending on another
-     layer's alpha. Width scales with height so the box aspect, and therefore
-     the halftone, is exactly as it was; the plate simply sits ~29% larger. */
-  .hero__l39 {
-    left: 36%;
-    top: -3%;
-    width: 108%;
-    height: 108%;
-  }
-
-  /* about 14% bigger than it was, same box aspect, dropped and pushed left so
-     more of the span and the far tower are in frame */
-  .hero__l38 {
-    left: -26%;
-    bottom: -7%;
-    width: 132%;
-    height: 52.4%;
-  }
-
-  .hero__l41 {
-    right: -12%;
-    bottom: -2%;
-    width: 84%;
-    height: 34%;
-  }
-
-  /* the torn paper sits lower than it did, uncovering more of the bridge */
-  .hero__l37 {
-    left: -34%;
-    right: 6%;
-    bottom: -32%;
-    height: 52%;
-  }
-
-  .hero__l40 {
-    left: -18%;
-    bottom: -3%;
-    width: 74%;
-    height: 88%;
-  }
-
-  /* Wordmark moved to the upper-centre where there's clear sky. Height comes
-     from the paper-cards artwork's own aspect ratio -- pinning it to a % of
-     the stage squashed the cards into a white blob once the stage went tall. */
-  .hero__mark {
-    left: 8%;
-    top: 15%;
-    width: 78%;
-    height: auto;
-    aspect-ratio: 622.746 / 241;
-  }
-
-  .hero__burst {
-    left: 52%;
-    top: 60%;
-    width: 44%;
-    height: 26%;
-  }
-
-  .hero__ver {
-    left: 57%;
-    top: 63.5%;
-    width: 30%;
-    height: 18%;
-  }
-}
-
-/* small phones: step the lockup down rather than letting it fill the width */
-@media (max-width: 400px) {
-  .hero__stage {
-    min-height: 70svh;
-  }
-
-  .hero__mark {
-    left: 6%;
-    top: 14%;
-    width: 82%;
-  }
-
-  .hero__burst {
-    left: 48%;
-    top: 58%;
-    width: 48%;
-    height: 28%;
-  }
-
-  .hero__ver {
-    left: 54%;
-    top: 61.5%;
-    width: 33%;
-    height: 20%;
-  }
 }

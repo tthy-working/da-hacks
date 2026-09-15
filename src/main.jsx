@@ -9,6 +9,8 @@ import './styles/morph.css'
 import './styles/about.css'
 import './styles/sponsors.css'
 import './styles/agenda.css'
+// last: the iPad and iPhone frames override the laptop geometry above
+import './styles/portrait.css'
 import './styles/faq.css'
 
 import App from './App'

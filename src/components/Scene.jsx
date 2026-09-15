@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import Hero from './Hero'
 import About from './About'
 import Sponsors from './Sponsors'
+import { LAPTOP } from '../breakpoints'
 
 /* Screen 1 smart-animating into screen 2, driven by scroll instead of drag.
    ---------------------------------------------------------------------------
@@ -19,13 +20,13 @@ import Sponsors from './Sponsors'
    only plates 36 and 39, and both travel LEFT -- the world sliding left is the
    camera panning right -- so where the first leg dives in, this one turns.
 
-   It only runs where the design's geometry is actually in play: at 1200px and
-   under, About reflows into a stacked column that is nothing like screen 2's
-   composition, so there is no second frame to animate to. Reduced motion opts
-   out for the obvious reason. In both cases the markup renders exactly as it
-   did before -- two ordinary sections, no pin. */
+   It runs wherever the laptop frames are the ones on screen. The iPad and
+   iPhone frames are separate compositions (see src/breakpoints.js), and the
+   offsets in morph.css are read off the laptop set, so on those the three
+   screens stand as ordinary sections. Reduced motion opts out for the obvious
+   reason. */
 
-const LIVE = '(min-width: 1201px) and (prefers-reduced-motion: no-preference)'
+const LIVE = `${LAPTOP} and (prefers-reduced-motion: no-preference)`
 
 export default function Scene() {
   const ref = useRef(null)

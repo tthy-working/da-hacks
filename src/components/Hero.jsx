@@ -1,4 +1,5 @@
 import Reveal from './Reveal'
+import { PHONE, TABLET } from '../breakpoints'
 
 /* Background collage layers, back to front -- this is the design's own paint
    order (36, 39, 38, 41, 37, 40), and layer 40 belongs at the FRONT: its
@@ -48,15 +49,16 @@ export default function Hero() {
 
         {/* white paper cards + wordmark */}
         <div className="hero__mark">
-          <Reveal
-            as="img"
-            className="hero__cards"
-            src="/assets/hero-union.svg"
-            alt=""
-            variant="drop snap"
-            delay={430}
-            aria-hidden="true"
-          />
+          {/* Each frame cuts its own set of cards -- the iPad and iPhone
+              lockups are re-set, so the paper under them is a different
+              shape, not the laptop's scaled down. */}
+          <Reveal className="hero__cards" variant="drop snap" delay={430} aria-hidden="true">
+            <picture>
+              <source media={PHONE} srcSet="/assets/hero-union-phone.svg" />
+              <source media={TABLET} srcSet="/assets/hero-union-tablet.svg" />
+              <img src="/assets/hero-union.svg" alt="" />
+            </picture>
+          </Reveal>
 
           <h1 className="sr-title">De Anza Hacks</h1>
 

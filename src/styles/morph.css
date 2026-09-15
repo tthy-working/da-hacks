@@ -134,7 +134,7 @@
 }
 
 /* leg one, screen 1 -> 2      dx        dy         scale x   scale y   */
-.scene.is-live .hero__l36 { --mx:   -2.062; --my:  -18.351; --msx: 1.2750; --msy: 1.1231; }
+.scene.is-live .hero__l36 { --mx:   -0.684; --my:   -9.357; --msx: 1.2750; --msy: 1.1231; }
 .scene.is-live .hero__l39 { --mx:   20.924; --my:  -35.940; --msx: 1.8642; --msy: 1.6826; }
 .scene.is-live .hero__l38 { --mx:   -9.594; --my:  -19.008; --msx: 1.6555; --msy: 1.4952; }
 .scene.is-live .hero__l37 { --mx:  -12.567; --my:   17.042; --msx: 1.0000; --msy: 1.0000; }

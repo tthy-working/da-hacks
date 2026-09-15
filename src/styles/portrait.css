@@ -1,0 +1,487 @@
+/* =========================================================================
+   The iPad and iPhone frames
+   -------------------------------------------------------------------------
+   The Figma file draws every screen three times, and the iPad (768x1024) and
+   iPhone (393x852) sets are compositions of their own -- plates re-cropped,
+   the wordmark re-set, the sponsor ask moved under its button. The laptop set
+   is the unqueried CSS in each section's file; this file lays out the other
+   two. Which one is on screen is decided in src/breakpoints.js:
+
+     phone   (max-width: 640px)
+     tablet  (min-width: 641px) and (orientation: portrait)
+
+   Nothing here is a pixel value for one device. Every figure is the Figma
+   frame's own number, and one unit scales the whole frame to the screen:
+
+     --u   one design pixel, = min(stage width / frame width,
+                                   stage height / frame height)
+
+   i.e. the frame is fitted inside the screen, so nothing in it is ever cut
+   off or pushed into anything else -- the copy keeps its distance from the
+   bridge on every phone because the two scale together. The frame is
+   centred across the screen and stood on its bottom edge, so the ground
+   stays on the ground; whatever room is left over is filled by the plates,
+   which the design already runs far past the frame's edges, and by the paper
+   backdrop, which is stretched to cover the screen outright.
+
+   Each piece carries its Figma box as --x --y --w --h (frame pixels, top
+   left) and one rule turns that into CSS. Rotated pieces use the layout box
+   -- Figma reports a rotated node's corner rather than its box, so those
+   were read from the design context, not the layer list.
+   ========================================================================= */
+
+/* ---- which frame ---- */
+@media (max-width: 640px) {
+  .hero__stage,
+  .about__stage,
+  .sponsors__stage,
+  .agenda__stage {
+    --W: 393;
+    --H: 852;
+  }
+}
+
+@media (min-width: 641px) and (orientation: portrait) {
+  .hero__stage,
+  .about__stage,
+  .sponsors__stage,
+  .agenda__stage {
+    --W: 768;
+    --H: 1024;
+  }
+}
+
+/* ---- the machinery, shared by both frames ---- */
+@media (max-width: 640px), (min-width: 641px) and (orientation: portrait) {
+  /* One screen tall on every device. svh, not vh: the small viewport height
+     does not change as the browser's toolbar slides away, so nothing jumps
+     mid-scroll. */
+  .hero__stage,
+  .about__stage,
+  .sponsors__stage {
+    aspect-ratio: auto;
+    height: 100svh;
+    container-type: size;
+    /* resolved where it is used, so the cq units measure the stage */
+    --u: min(100cqw / var(--W), 100cqh / var(--H));
+  }
+
+  .hero__stage > :is(.layer, .hero__mark, .hero__burst, .hero__ver),
+  .about__stage > :is(.layer, .about__title, .about__date),
+  .sponsors__stage > :is(.layer, .sponsors__divider, .sponsors__cta) {
+    position: absolute;
+    inset: auto;
+    left: calc(50% + (var(--x) - var(--W) / 2) * var(--u));
+    bottom: calc((var(--H) - var(--y) - var(--h)) * var(--u));
+    width: calc(var(--w) * var(--u));
+    height: calc(var(--h) * var(--u));
+    aspect-ratio: auto;
+    margin: 0;
+  }
+
+  /* Text blocks that set their own height: anchored by their top edge. */
+  .about__stage > .about__copy,
+  .sponsors__stage > :is(.sponsors__title, .sponsors__wall, .sponsors__ask) {
+    position: absolute;
+    inset: auto;
+    left: calc(50% + (var(--x) - var(--W) / 2) * var(--u));
+    top: calc(100% - (var(--H) - var(--y)) * var(--u));
+    width: calc(var(--w) * var(--u));
+    height: auto;
+    margin: 0;
+  }
+
+  /* The paper backdrop covers the screen outright, whatever its shape: each
+     edge goes to the frame's figure or the screen's edge, whichever is
+     further out. It is an object-fit: cover image, so a box that grows by a
+     few percent crops rather than stretches. */
+  :is(.hero__l36, .about__l36, .sponsors__l36) {
+    top: min(0px, calc(100% - (var(--H) - var(--y)) * var(--u))) !important;
+    bottom: min(0px, calc((var(--H) - var(--y) - var(--h)) * var(--u))) !important;
+    left: min(0px, calc(50% + (var(--x) - var(--W) / 2) * var(--u))) !important;
+    right: min(0px, calc(50% - (var(--x) + var(--w) - var(--W) / 2) * var(--u))) !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  /* Neither frame has the tree on About; the laptop one does. */
+  .about__l40 {
+    display: none;
+  }
+
+  /* Inside these, type is sized off the stage, so they must not be query
+     containers themselves -- otherwise the cqw inside --u would measure the
+     heading box instead of the screen. */
+  .about__title,
+  .agenda__title {
+    container-type: normal;
+  }
+
+  .about__title {
+    display: block;
+  }
+
+  .about__title p {
+    width: auto;
+    font-size: calc(var(--fs) * var(--u));
+    /* Figma's leading, which its text boxes are measured from */
+    line-height: normal;
+    text-align: left;
+    /* straight on both frames; only the laptop tilts it along the cable */
+    transform: none;
+    white-space: nowrap;
+  }
+
+  .sponsors__title {
+    font-size: calc(var(--fs) * var(--u));
+    line-height: normal;
+  }
+
+  .sponsors__ask {
+    font-size: calc(20 * var(--u));
+    line-height: normal;
+    white-space: nowrap;
+  }
+
+  .sponsors__soon {
+    padding: calc(var(--pad) * 0.7 * var(--u)) calc(var(--pad) * var(--u));
+  }
+
+  .sponsors__soon strong {
+    font-size: calc(var(--soon) * var(--u));
+  }
+
+  .sponsors__soon span {
+    font-size: calc(var(--soon) * 0.44 * var(--u));
+  }
+
+  /* Letters sit in the lockup's own units, the way the laptop lockup does:
+     --lx/--ly are frame pixels from the card's top left, --fs the Figma type
+     size, and --mw the card's width. --nudge is the laptop's +1.6cqw drop,
+     rescaled to this lockup's type: the webfont seats its ink higher in the
+     box than Figma's renderer does. */
+  .hero__stage .hero__mark span {
+    left: calc(var(--lx) * 100cqw / var(--mw));
+    top: calc((var(--ly) + var(--nudge)) * 100cqw / var(--mw));
+    font-size: calc(var(--fs) * 100cqw / var(--mw));
+  }
+}
+
+/* =========================================================================
+   iPhone, 393 x 852
+   ========================================================================= */
+@media (max-width: 640px) {
+  /* ---- screen 7: hero ---- */
+  .hero__l36 { --x: -590.068; --y: -119;  --w: 1683.433; --h: 971; }
+  .hero__l39 { --x: 280;      --y: 303;   --w: 529;      --h: 567; }
+  .hero__l38 { --x: -194;     --y: 477;   --w: 655;      --h: 374; }
+  .hero__l41 { --x: 190;      --y: 687;   --w: 280;      --h: 165; }
+  .hero__l37 { --x: -101;     --y: 695;   --w: 582.276;  --h: 359.823; }
+  .hero__l40 { --x: -274;     --y: -73;   --w: 547;      --h: 943; }
+
+  .hero__mark  { --x: 36;     --y: 230;    --w: 323.001;  --h: 133.896; --mw: 323.001; --nudge: 6.05; }
+  .hero__burst { --x: 136.8;  --y: 391.19; --w: 242.265;  --h: 214.002; }
+  .hero__ver   { --x: 140.35; --y: 443;    --w: 236.869;  --h: 106.285; }
+
+  .hero__stage .hero__mark .m-d     { --lx: 12;  --ly: -16; --fs: 88; }
+  .hero__stage .hero__mark .m-e     { --lx: 60;  --ly: 18;  --fs: 40; }
+  .hero__stage .hero__mark .m-nza   { --lx: 93;  --ly: 74;  --fs: 40; }
+  .hero__stage .hero__mark .m-a     { --lx: 40;  --ly: 44;  --fs: 80; }
+  .hero__stage .hero__mark .m-hacks { --lx: 102; --ly: 2;   --fs: 80; }
+
+  .hero__stage .hero__cards {
+    width: 105.57%;
+    height: 110.46%;
+    inset: 0 auto auto 0;
+  }
+
+  .hero__stage .hero__ver p {
+    font-size: calc(72 * 100cqw / 236.869);
+  }
+
+  /* ---- screen 5: About ---- */
+  .about__l36 { --x: -19.343;  --y: -199.688; --w: 581.517;  --h: 1091.625; }
+  .about__l39 { --x: 319.927;  --y: -272.394; --w: 346.024;  --h: 1237.038; }
+  .about__l38 { --x: -273.502; --y: 309.217;  --w: 929.780;  --h: 610.355; }
+  .about__l37 { --x: -384;     --y: 619;      --w: 1130.687; --h: 698.719; }
+
+  .about__title { --x: 36;  --y: 75;  --w: 193;     --h: 69;     --fs: 72; }
+  .about__date  { --x: 27;  --y: 678; --w: 340.34;  --h: 75.306; }
+  .about__copy  { --x: 31;  --y: 168; --w: 319; }
+
+  .about__title .wordmark--about {
+    text-shadow: -0.0833em 0.0556em 0 var(--orange);
+  }
+
+  .about__date p {
+    font-size: calc(40 * 100cqw / 340.34);
+  }
+
+  /* The phone frame sets the copy as a plain wrapping column: no hand-set
+     rag, no rake along the cable. */
+  .about__copy::before,
+  .about__copy br {
+    display: none;
+  }
+
+  .about__copy p {
+    font-size: calc(13 * var(--u));
+    line-height: 1.48;
+    letter-spacing: -0.1em;
+  }
+
+  .about__copy strong {
+    font-size: calc(16 * var(--u));
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .about__copy p + p {
+    margin-top: 1.48em;
+  }
+
+  /* ---- Frame 4: Sponsors ---- */
+  .sponsors__l36   { --x: -536.733; --y: -636.591; --w: 1050.225; --h: 1975.954; }
+  .sponsors__panel { --x: 13;       --y: 150.95;   --w: 763;      --h: 818.1; }
+
+  .sponsors__title   { --x: 36; --y: 124; --w: 347; --fs: 72; }
+  .sponsors__divider { --x: 26; --y: 695; --w: 350.989; --h: 72.264; }
+  .sponsors__ask     { --x: 46; --y: 712; --w: 290; }
+  .sponsors__cta     { --x: 74; --y: 750; --w: 233.696; --h: 75.83; }
+
+  /* Not in the frame: the card that stands in for the logos, in the open
+     ground between the title and the ask. */
+  .sponsors__wall { --x: 36; --y: 318; --w: 321; }
+  .sponsors__soon { --pad: 20; --soon: 26; }
+
+  .sponsors__title.wordmark--sponsors {
+    text-shadow: -0.139em 0.0556em 0 var(--paper);
+  }
+}
+
+/* =========================================================================
+   iPad, 768 x 1024
+   ========================================================================= */
+@media (min-width: 641px) and (orientation: portrait) {
+  /* ---- screen 11: hero ---- */
+  .hero__l36 { --x: -552.167; --y: -119; --w: 1981.631; --h: 1143; }
+  .hero__l39 { --x: 509.32;   --y: 184;  --w: 714.36;   --h: 765.95; }
+  .hero__l38 { --x: -366;     --y: 358;  --w: 1233;     --h: 705; }
+  .hero__l41 { --x: 315;      --y: 657;  --w: 691;      --h: 408; }
+  .hero__l37 { --x: -265;     --y: 731;  --w: 947.101;  --h: 585.271; }
+  .hero__l40 { --x: -336;     --y: -184; --w: 720;      --h: 1242; }
+
+  .hero__mark  { --x: 151; --y: 175; --w: 535.224; --h: 211;     --mw: 535.224; --nudge: 8.79; }
+  .hero__burst { --x: 419; --y: 358; --w: 331.123; --h: 292.493; }
+  .hero__ver   { --x: 476; --y: 444; --w: 238.637; --h: 120.924; }
+
+  .hero__stage .hero__mark .m-d     { --lx: 43;  --ly: -17; --fs: 128; }
+  .hero__stage .hero__mark .m-e     { --lx: 118; --ly: 23;  --fs: 64; }
+  .hero__stage .hero__mark .m-nza   { --lx: 150; --ly: 120; --fs: 64; }
+  .hero__stage .hero__mark .m-a     { --lx: 66;  --ly: 75;  --fs: 128; }
+  .hero__stage .hero__mark .m-hacks { --lx: 176; --ly: 9;   --fs: 128; }
+
+  .hero__stage .hero__cards {
+    width: 103.36%;
+    height: 106.64%;
+    inset: 0 auto auto 0;
+  }
+
+  .hero__stage .hero__ver p {
+    font-size: calc(96 * 100cqw / 238.637);
+  }
+
+  /* ---- screen 10: About ---- */
+  .about__l36 { --x: -37.8;  --y: -240;     --w: 1136.4;   --h: 1312; }
+  .about__l39 { --x: 625.2;  --y: -327.385; --w: 676.2;    --h: 1486.769; }
+  .about__l38 { --x: -442;   --y: 328;      --w: 1293;     --h: 739; }
+  .about__l37 { --x: -346;   --y: 772;      --w: 1130.687; --h: 698.719; }
+
+  .about__title { --x: 60;  --y: 180; --w: 452;     --h: 150.454; --fs: 109; }
+  .about__date  { --x: 234; --y: 813; --w: 462.622; --h: 102.363; }
+
+  /* The iPad frame keeps the laptop's hand-set lines and their rake along
+     the cable -- same six lines, same steps -- so the copy keeps the laptop
+     block, 600 frame pixels wide, set at 15 and moved to where this frame
+     puts its first line. */
+  .about__copy { --x: 157; --y: 362; --w: 600; }
+
+  .about__copy p {
+    font-size: calc(15 * var(--u));
+  }
+
+  /* ---- screen 9: Sponsors ---- */
+  .sponsors__l36   { --x: -1025.4; --y: -745.846; --w: 2006.4; --h: 2315.077; }
+  .sponsors__panel { --x: 185;     --y: 223.1;    --w: 828;    --h: 887.8; }
+
+  .sponsors__title   { --x: 60;  --y: 119;     --w: 609; --fs: 109; }
+  .sponsors__divider { --x: 53;  --y: 818.149; --w: 653.994; --h: 70.934; }
+  .sponsors__ask     { --x: 76;  --y: 838;     --w: 375; }
+  .sponsors__cta     { --x: 384; --y: 828;     --w: 199.45;  --h: 52.15; }
+
+  .sponsors__wall { --x: 60; --y: 440; --w: 520; }
+  .sponsors__soon { --pad: 34; --soon: 38; }
+
+  /* A flatter tag than the laptop's and the phone's: rotated less, and
+     sheared, with the lettering counter-turned inside it. */
+  .sponsors__cta a {
+    width: 97.731%;
+    height: 81.749%;
+    transform: rotate(-2.88deg) skewX(3.55deg);
+  }
+
+  .sponsors__cta a:hover,
+  .sponsors__cta a:focus-visible {
+    transform: rotate(-2.88deg) skewX(3.55deg) translateY(-3px) scale(1.05);
+  }
+
+  .sponsors__cta span {
+    font-size: calc(32 * 100cqw / 199.45);
+    transform: rotate(1.83deg) skewX(-2.25deg);
+  }
+}
+
+/* =========================================================================
+   Agenda, both frames
+   -------------------------------------------------------------------------
+   The one screen that cannot be a fitted picture: it carries the schedule,
+   and the frames leave room for it but do not draw it. So it stays in flow
+   and grows past a screen if the rows need it, while the scenery -- the hills
+   and, on the iPad, the two signs -- is placed off the frame and stood on
+   the section's bottom edge. The unit is width-only here, since the height
+   belongs to the content.
+   ========================================================================= */
+@media (max-width: 640px), (min-width: 641px) and (orientation: portrait) {
+  .agenda__stage {
+    aspect-ratio: auto;
+    min-height: 100svh;
+    container-type: inline-size;
+    --u: calc(100cqw / var(--W));
+    display: flex;
+    flex-direction: column;
+    gap: calc(22 * var(--u));
+    /* No side padding on the stage itself: container units measure its
+       content box, so padding here would shrink --u and every piece of
+       scenery with it. The gutter goes on the content instead. */
+    padding: 0 0 calc(56 * var(--u));
+  }
+
+  .agenda__stage > :is(.agenda__grass, .agenda__sign) {
+    position: absolute;
+    inset: auto;
+    left: calc(var(--x) * var(--u));
+    bottom: calc((var(--H) - var(--y) - var(--h)) * var(--u));
+    width: calc(var(--w) * var(--u));
+    height: calc(var(--h) * var(--u));
+    aspect-ratio: auto;
+  }
+
+  /* straight: the arc follows the laptop's hill crest, which neither of
+     these frames draws under it */
+  .agenda__title {
+    position: relative;
+    inset: auto;
+    display: flex;
+    width: auto;
+    height: auto;
+    margin: calc(var(--ty) * var(--u)) 0 0 calc(var(--tx) * var(--u));
+  }
+
+  .agenda__title .a1,
+  .agenda__title .a2,
+  .agenda__title .a3,
+  .agenda__title .a4,
+  .agenda__title .a5,
+  .agenda__title .a6 {
+    position: static;
+    top: auto;
+    left: auto;
+    transform: none;
+    font-size: calc(var(--fs) * var(--u));
+    /* the frames set every heading at the typeface's own leading, and their
+       text boxes are measured from that line's top, not the glyphs' */
+    line-height: normal;
+    text-shadow: var(--shadow) 0 #fff;
+  }
+
+  .agenda__days,
+  .agenda__note {
+    position: relative;
+    inset: auto;
+    width: auto;
+    max-width: none;
+    margin-inline: var(--side);
+  }
+
+  .agenda__note {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .agenda__stage {
+    --side: calc(24 * var(--u));
+  }
+
+  .agenda__grass { --x: -12; --y: 497; --w: 738; --h: 415; }
+
+  .agenda__sign {
+    display: none;
+  }
+
+  .agenda__title {
+    --tx: 36;
+    --ty: 94;
+    --fs: 72;
+    --shadow: -0.083em 0.056em;
+  }
+
+  .agenda__days {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda__day h3 {
+    font-size: calc(24 * var(--u));
+  }
+
+  .agenda__row {
+    font-size: calc(13 * var(--u));
+    grid-template-columns: 6.2em 1fr;
+  }
+
+  .agenda__note {
+    font-size: calc(14 * var(--u));
+  }
+}
+
+@media (min-width: 641px) and (orientation: portrait) {
+  .agenda__stage {
+    --side: calc(60 * var(--u));
+  }
+
+  .agenda__grass { --x: 0; --y: 442; --w: 768; --h: 629; }
+
+  /* the trimmed artwork's own box inside screen 8's crops */
+  .agenda__sign--crossing { --x: 561.75; --y: 522.88; --w: 188.97; --h: 502.17; }
+  .agenda__sign--bike     { --x: 367.12; --y: 767.53; --w: 276.41; --h: 256.5; }
+
+  .agenda__title {
+    --tx: 60;
+    --ty: 103;
+    --fs: 109;
+    --shadow: -0.055em 0.037em;
+  }
+
+  .agenda__day h3 {
+    font-size: calc(30 * var(--u));
+  }
+
+  .agenda__row {
+    font-size: calc(15 * var(--u));
+    grid-template-columns: 6em 1fr;
+  }
+
+  .agenda__note {
+    font-size: calc(19 * var(--u));
+  }
+}

@@ -41,20 +41,22 @@
 }
 
 /* Boxes carry each sign's own aspect (903x838 and 397x1057 after trimming the
-   exports' empty canvas), so `contain` has no slack to letterbox and the
-   artwork fills exactly what is reserved for it. Both run to the foot of the
-   frame, where the design stands their poles. */
+   exports' empty canvas), so `contain` has no slack to letterbox. Positions
+   are the trimmed artwork's own box inside the Figma crops -- the frame's
+   1920x1080 sources hold the bike sign at 531,242 and the crossing sign at
+   695,23 -- so both stand where screen 4 stands them, poles running off the
+   foot of the frame. */
 .agenda__sign--bike {
-  left: 63.7%;
-  top: 61.5%;
-  width: 24%;
+  left: 63.742%;
+  top: 60.928%;
+  width: 25.378%;
   aspect-ratio: 903 / 838;
 }
 
 .agenda__sign--crossing {
-  left: 84.4%;
-  top: 32.9%;
-  width: 14.2%;
+  left: 84.165%;
+  top: 32.652%;
+  width: 15.272%;
   aspect-ratio: 397 / 1057;
 }
 
@@ -91,7 +93,7 @@
 .agenda__days {
   position: absolute;
   left: 34%;
-  top: 13%;
+  top: 17%;
   width: 60%;
   z-index: 4;
   display: grid;
@@ -173,117 +175,4 @@
   padding: 10px 13px;
   box-shadow: var(--shadow-paper-sm);
   transform: rotate(-1.4deg);
-}
-
-/* ---- mobile ---- */
-/* Two columns for as long as they will take it. Stacking the days is what
-   made this section run past a screen on a phone-width window -- side by side
-   they cost the height of the longer day, stacked they cost both plus a gap.
-   A few of the longer event names wrap at this width; that is much the
-   cheaper price. */
-@media (max-width: 560px) {
-  .agenda__days {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1200px) {
-  .agenda__stage {
-    aspect-ratio: auto;
-    /* min, not a fixed height: this screen is a schedule, so it matches the
-       others when it fits and grows past them rather than clipping rows. */
-    min-height: 100svh;
-    padding: calc(var(--nav-h) + 26px) var(--gutter) 44px;
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-
-  .agenda__sign {
-    display: none;
-  }
-
-  .agenda__grass {
-    left: -20%;
-    top: auto;
-    bottom: -4%;
-    width: 140%;
-    height: 46%;
-  }
-
-  /* The arc's own bounding box in the design is 401.61 x 232.5. Matching that
-     aspect lets the cqw-sized letters scale with the box instead of
-     overflowing a fixed height and colliding with the cards.
-
-     RELATIVE, not static: the letters inside are absolutely positioned, so
-     with a static title they offset from .agenda__stage instead -- centring
-     the title box then moved an empty box while the arc stayed pinned to the
-     left gutter and hung off the edge of the screen.
-
-     460px to 340px as well: at the old size the heading alone stood 266px
-     tall, which is most of the reason this section outgrew a screen. */
-  .agenda__title {
-    position: relative;
-    width: min(100%, 340px);
-    height: auto;
-    aspect-ratio: 401.61 / 232.5;
-    margin: 0 auto;
-    inset: auto;
-  }
-
-  .agenda__days,
-  .agenda__note {
-    position: static;
-    width: 100%;
-    max-width: none;
-    inset: auto;
-    font-size: 15px;
-  }
-
-  .agenda__row {
-    font-size: 13.5px;
-    grid-template-columns: minmax(66px, 6em) 1fr;
-  }
-}
-
-/* =========================================================================
-   Stacked layout: the wordmark straight
-   -------------------------------------------------------------------------
-   The arc exists to follow the crest of the grass hill it sits on. Below
-   1200px the heading leaves the hill and centres above the cards, so the
-   curve is arcing against nothing and reads as a mistake rather than as
-   hand-placed. Flat from here down: the letters keep the design's horizontal
-   spacing and lose the rotations and the vertical stagger.
-   ========================================================================= */
-@media (max-width: 1200px) {
-  .agenda__title {
-    /* a flat word needs a line's height, not the arc's 401x232 box */
-    aspect-ratio: 401.61 / 118;
-  }
-
-  /* Flow, not the arc's hand-set coordinates. Those lefts were spaced for
-     letters standing at up to 31deg, where the rotation opens a gap between
-     each pair; stood upright at the same lefts, "Agenda" overlaps by 7-12px
-     in four places. Laid out in a row each glyph takes its own advance width
-     and the word sets the way the typeface intends.
-
-     Per-letter selectors, not a bare `span`: the reveal system lands each
-     piece with `.rv.is-in { transform: ... }`, which outranks a one-class
-     selector. These match the arc rules they replace and sit after them. */
-  .agenda__title {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  .agenda__title .a1,
-  .agenda__title .a2,
-  .agenda__title .a3,
-  .agenda__title .a4,
-  .agenda__title .a5,
-  .agenda__title .a6 {
-    position: static;
-    top: auto;
-    left: auto;
-    transform: none;
-  }
 }

@@ -105,7 +105,7 @@ export default function NavBar() {
               style={{ '--i-delay': `${i * 55}ms` }}
               onClick={() => setOpen(false)}
             >
-              {link.label}
+              <span>{link.label}</span>
             </a>
           </li>
         ))}

@@ -39,8 +39,8 @@ export default function About({ anchorId = 'about' }) {
         {/* The design breaks these six lines by hand -- that hand-set rag is
             what gives the block its taper against the bridge tower, and no
             column width reproduces it by wrapping. The breaks are carried
-            explicitly and switched off under 1200px (see about.css), where the
-            copy reflows into a normal column.
+            explicitly and switched off on the iPhone frame (see portrait.css),
+            where the design sets the copy as a plain wrapping column.
 
             The {' '} before each break is load-bearing: with the <br> hidden
             the two text nodes butt together, and without it the copy reads

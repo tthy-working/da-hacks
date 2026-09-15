@@ -12,7 +12,7 @@
   --font-display: 'Irish Grover', 'Comic Sans MS', cursive;
   --font-body: 'Space Mono', ui-monospace, monospace;
 
-  --nav-h: clamp(60px, 5.6vw, 81px);
+  --nav-h: clamp(52px, 5vw, 72px);
   --gutter: clamp(20px, 5vw, 98px);
 
   /* collage drop shadow used on the paper cut-outs in the design */
@@ -72,14 +72,13 @@ button {
   isolation: isolate;
 }
 
-/* Breakpoints
+/* Frames
    ----------------------------------------------------------------
-   > 1200px   collage stages, absolute positioning, design geometry
-   <= 1200px  About/Sponsors/Agenda reflow to stacked flow layout
-              (below this the design's 16px copy hits its clamp floor and
-              the absolutely placed boxes start to collide)
-   <= 640px   hero switches to its tall phone framing
-   <= 400px   type and spacing step down again for small phones
+   Figma draws each screen for three devices, and the page lays out whichever
+   one fits the screen's shape (src/breakpoints.js):
+     phone   <= 640px wide          iPhone frame, 393x852    portrait.css
+     tablet  > 640px, portrait      iPad frame, 768x1024     portrait.css
+     laptop  > 640px, landscape     laptop frame, 1440 wide  each section's file
    Nav collapses to a burger at <= 1040px. */
 
 /* Full-bleed collage layer. The design stacks torn-paper photo layers at
