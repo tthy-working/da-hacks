@@ -2,6 +2,12 @@
   "name": "da-hacks",
   "private": true,
   "version": "0.1.0",
+  "description": "Original build of the De Anza Hacks 5.0 website: a paper-collage hackathon site in React and Vite, built from Figma.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tthy-working/da-hacks.git"
+  },
+  "homepage": "https://deanzahacks.com",
   "type": "module",
   "scripts": {
     "dev": "vite",
